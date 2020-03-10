@@ -1,0 +1,195 @@
+import { Component, Input, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
+import { ChartModule } from 'primeng/chart';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { KpiModel, DeptNameModel } from './KPI.model';
+import { KPIService } from './KPI.service';
+
+@Component({
+  selector: 'app-KPI',
+  templateUrl: './KPI.component.html',
+  styleUrls: ['./KPI.component.css']
+})
+export class KPIComponent implements OnInit {
+
+  data: KpiModel[];
+  kpiMgtData: KpiModel[]=[];
+  dataList: KpiModel[];
+  value: boolean;
+  deptname: DeptNameModel[];
+  barChart: any;
+  lineChart: any;
+  label: any[] = [];
+  target: any[] = [];
+  actual: any[] = [];
+  deptlist:any[]=[];
+  selectedCity: any;
+  barchartList:any[]=[];
+  selectedMonth:any;
+  selectedYear:any;
+  selectedDept:any;
+  showGraph = false;
+  showReport = false;
+
+
+  constructor(
+    private kpiService: KPIService, private formBuilder: FormBuilder, chartModule: ChartModule,
+    private cdRef: ChangeDetectorRef, private route: ActivatedRoute) {
+
+   
+  }
+
+  ngOnInit() {
+    this.loadKpiReport();
+  }
+
+
+
+  loadKpiReport() {
+    this.kpiService.getAllKpi().subscribe(x => {
+      this.data = x;
+      this.dataList=x;
+      
+      // this.data.forEach(x => {
+
+      //   this.target.push(x.Target);
+      //   this.actual.push(x.April);      
+      //   this.label.push(x.CWQPNo);
+      //   //this.label.push(x.KpiName);
+      // })
+      var lookup = {};
+      var items = this.data
+     
+
+      for (var item, i = 0; item = items[i++];) {
+        var name = item.DeptName;
+        //var name = item.CWQPNo;
+
+        if (!(name in lookup)) {
+          lookup[name] = 1;
+          this.deptlist.push(name);
+        }
+      }
+     // this.loadBarChart(this.target, this.actual, this.label);
+    //  this.loadLineChart(this.target, this.actual, this.label);
+      console.log(this.data);
+      console.log(this.deptlist);
+    });
+  }
+  onSelectMonth(event){
+    this.selectedMonth = event.target.value;
+    //this.loadLineChart(this.target, this.actual, this.label);
+  }
+  onSelectDpt(event){
+ this.selectedDept = event.target.value;
+
+
+//  this.loadBarChart(this.target, this.actual, this.label);
+//  this.loadLineChart(this.target, this.actual, this.label);
+  }
+  onSelectYear(event){
+    this.selectedYear = [];
+    this.selectedYear = event.target.value;
+  }
+
+  filterKPI(){
+    this.label = [];
+    this.actual = [];
+    this.dataList = [];
+    this.target = [];
+   // this.kpiMgtData = this.data.filter(itm=>itm.MgtKPICheckedStatus= true);
+    // if(x.Month=== this.selectedMonth && x.DeptName == this.selectedDept && x.Year == this.selectedYear ){
+     
+    // }
+     this.kpiMgtData = this.data.filter(itm=>itm.MgtKPICheckedStatus== true);
+     if(this.selectedDept== "KPI Management"){
+      this.kpiMgtData.forEach(kpimg=>{
+        if(kpimg.Month=== this.selectedMonth  && kpimg.Year == this.selectedYear ){
+          this.actual.push(kpimg.Actual);
+          this.label.push(kpimg.KpiName);
+          this.target.push(kpimg.Target)
+          this.dataList.push(kpimg);
+        }
+       })
+     }
+    else{
+
+      this.data.forEach(x => {
+        if(x.Month=== this.selectedMonth && x.DeptName == this.selectedDept && x.Year == this.selectedYear ){
+         this.actual.push(x.Actual);
+         this.label.push(x.KpiName);
+         this.target.push(x.Target)
+         this.dataList.push(x);
+       }
+    
+     //   else if(x.Month=== this.selectedMonth && x.DeptName == this.selectedDept && x.Year == this.selectedYear){
+     //     this.actual.push(x.August);
+     //     this.label.push(x.CWQPNo);
+     //     this.target.push(x.Target)
+     //     this.dataList.push(x);
+     //   }
+      
+     
+     });
+
+    }
+     
+      
+      this.loadLineChart(this.target, this.actual, this.label);
+    this.showGraph = true;
+    this.showReport= true;
+  }
+  loadBarChart(target: any[], actual: any[], label: any[]) {
+
+    this.barChart = {
+      labels: label,
+      datasets: [
+        {
+          label: 'Target',
+          backgroundColor: '#42A5F5',
+          borderColor: '#1E88E5',
+          data: target
+        },
+        {
+          label: 'Actual',
+          backgroundColor: '#9CCC65',
+          borderColor: '#7CB342',
+          data: actual
+        }
+      ]
+    }
+  }
+
+
+loadLineChart(target: any[], actual: any[], label: any[]){
+  this.barChart = {
+    labels: label,
+    datasets: [
+      {
+        label: 'Target',
+        data: target,
+        backgroundColor: '#42A5F5',
+          borderColor: '#1E88E5',
+        fill: false,
+        //borderColor: '#4bc0c0'
+      },
+      {
+        label: 'Actual',
+        data: actual,
+        backgroundColor: '#9CCC65',
+        borderColor: '#7CB342',
+        fill: false,
+        //borderColor: '#565656'
+      }
+    ]
+  }
+}
+
+
+
+
+
+
+}
+
+

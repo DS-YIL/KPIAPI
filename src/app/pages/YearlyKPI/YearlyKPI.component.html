@@ -1,0 +1,198 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+                <label for="DivisionName" class="form-label">Department Name :</label>
+                <!-- <p-dropdown [options]="deptlist" [(ngModel)]="selectedCity" placeholder="Select Department" optionLabel="name" [showClear]="true"></p-dropdown> -->
+                <select placeholder="Dipartment" id="dipartment" name="Dipartment" (change)="onSelectDpt($event)"
+                    class="form-control">
+                    <option value="All Department">All</option>
+                    <option *ngFor="let data of deptlist">{{data}} </option>
+                </select>
+
+            </div>
+
+            <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+                <label for="Year" class="form-label">FY :</label>
+                <select placeholder="Year" id="year" name="Year" (change)="onSelectYear($event)" class="form-control">
+                    <option value="2020"> 2020</option>
+                    <option value="2019"> 2019</option>
+                </select>
+            </div>
+
+            <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+                <button style="margin-top: 25px;" type="submit" (click)="filterKPI()" value="true"
+                    class="btn btn-primary">Submit</button>
+            </div>
+
+            <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+                <button style="margin-top: 25px;" [routerLink]="['/KPI/GraphicalYearlyKPI']" class="btn btn-primary" type="button" >GoTo GraphicalKPI </button>    
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <p-table #dt [value]="dataList" dataKey="kpi"
+                    [globalFilterFields]="['QualityIndices','Criteria','CWQPNo','DeptName','Measurment','Target','Actual']"
+                    editMode="row" [paginator]="true" [rows]="7" [resizableColumns]="true" columnResizeMode="expand"
+                    [responsive]="true" selectionMode="single">
+                    <ng-template pTemplate="caption">
+                        QHSE KPI - Report
+                        <div style="text-align: left" *ngIf="showSelectedTitle">
+                            <span>{{selectedDept}}</span> &nbsp;
+                            <span>{{selectedYear}}</span>
+                        </div>
+                        <div style="text-align: right">
+                            <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                            <input type="text" pInputText size="25" placeholder="Global Filter"
+                                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <!-- <th style="width:5em">Select</th> -->
+                            <!-- <th>Department</th> -->
+                            <th style="width:7em">CWQP No</th>
+                            <th style="width:8em">Quality Indices</th>
+                            <th style="width:10em">Criteria</th>
+                            <th style="width:8em">Measurement</th>
+                            <!-- <th>Purpose</th> -->
+                            <th style="width:5em">Target</th>
+                            <th style="width:5em">Mar</th>
+                            <th style="width:5em">Apr</th>
+                            <th style="width:5em">May</th>
+                            <th style="width:5em">Jun</th>
+                            <th style="width:5em">Jul</th>
+                            <th style="width:5em">Aug</th>
+                            <th style="width:5em">Sep</th>
+                            <th style="width:5em">Oct</th>
+                            <th style="width:5em">Nov</th>
+                            <!-- <th style="width:5em">Actual</th>  
+            <th style="width:5em">Month</th>           -->
+                            <!-- <th style="width:8em"></th>            -->
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+                        <tr [pEditableRow]="rowData">
+                            <!-- <td>
+                {{rowData.KpiId}} 
+                <p-checkbox [(ngModel)]="value" binary="true"></p-checkbox>              
+            </td> -->
+                            <!-- <td>
+                                
+                                        {{rowData.Department}}
+                                   
+                            </td> -->
+                            <td>
+                               
+                                        {{rowData.CWQPNo}}
+                                    
+                            </td>
+
+                            <td>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="rowData.QualityIndices" required>
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{rowData.QualityIndices}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="rowData.Criteria" required>
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{rowData.Criteria}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="rowData.Measurment">
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{rowData.Measurement}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <!-- <td>
+                <p-cellEditor>
+                    <ng-template pTemplate="input">
+                        <input pInputText type="text" [(ngModel)]="rowData.Purpose">
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                        {{rowData.Purpose}}
+                    </ng-template>
+                </p-cellEditor>
+            </td> -->
+                            <td>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="rowData.Target">
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{rowData.Target}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td>
+
+                                {{rowData.March}}
+
+                            </td>
+                            <td>
+
+                                {{rowData.April}}
+
+                            </td>
+                            <td>
+
+                                {{rowData.May}}
+
+                            </td>
+                            <td>
+
+                                {{rowData.June}}
+
+                            </td>
+                            <td>
+
+                                {{rowData.July}}
+
+                            </td>
+                            <td>
+
+                                {{rowData.August}}
+
+                            </td>
+                            <td>
+
+                                {{rowData.September}}
+
+                            </td>
+                            <td>
+
+                                {{rowData.October}}
+
+                            </td>
+                            <td>
+
+                                {{rowData.November}}
+
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+</div>

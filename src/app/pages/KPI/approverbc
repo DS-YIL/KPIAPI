@@ -1,0 +1,178 @@
+
+<div>
+    <h5 class="text-center" style="font-size:xx-large;background-color: #DCDEE0;">Credit Control Application Request Form</h5>
+  
+    <form [formGroup]="approverform">
+      <div id="Form" class="my-animation">
+       
+        <div class="form-control" style="height:100%;border-radius:0px;">
+            <div class="row">           
+              <div  class="col-lg-3 col-md-3 col-sm-3 form-group">
+                <label class="form-label lblEdit ">Full Company/Business Name  : <span class="valueEdit">{{requestFormViewData.CompanyName}}</span></label>
+                  <!-- <span class="valueEdit">{{requestFormViewData.CompanyName}}</span>     -->
+              </div>
+              <div  class="col-lg-3 col-md-3 col-sm-3 form-group">
+                <label class="form-label lblEdit ">Business Unit  :  <span class="valueEdit">{{requestFormViewData.DivisionName}}</span> </label>
+               
+              </div>
+              <div  class="col-lg-3 col-md-3 col-sm-3 form-group">
+                <label class="form-label lblEdit ">ProposeType  : <span class="valueEdit">{{requestFormViewData.ProposeType}}</span> </label>                  
+              </div>
+              <div  class="col-lg-3 col-md-3 col-sm-3 form-group">
+                <label class="form-label lblEdit ">CustomerType : <span class="valueEdit">{{requestFormViewData.CustomerType}}</span></label>                 
+              </div>
+            </div>           
+        <div class="row">
+          <div  class="col-lg-3 col-md-3 col-sm-3 form-group">
+            <label class="form-label lblEdit ">Public Sector Undertaking : <span class="valueEdit">{{requestFormViewData.PublicSectorUndertaking}}</span></label>
+            
+          </div>     
+          <div  class="col-lg-3 col-md-3 col-sm-3 form-group">
+            <label class="form-label lblEdit ">Limited Company : <span class="valueEdit">{{requestFormViewData.LtdComp}}</span></label>
+            
+          </div>
+          <div  class="col-lg-3 col-md-3 col-sm-3 form-group">
+            <label class="form-label lblEdit ">Private Limited Company : <span class="valueEdit">{{requestFormViewData.PVTLtdComp}}</span></label>
+            
+          </div>
+          <div  class="col-lg-3 col-md-3 col-sm-3 form-group">
+            <label class="form-label lblEdit ">Others : <span class="valueEdit">{{requestFormViewData.Others}}</span></label>
+            
+          </div>
+    </div>
+    <div class="row">
+      <div  class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label lblEdit ">YGS Legal Entity Code : <span class="valueEdit">{{requestFormViewData.YGSLegalEntityCode}}</span> </label>
+          
+      </div>
+      <div  class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label lblEdit ">YGS Legal Entity Name : <span class="valueEdit">{{requestFormViewData.YGSLegalEntityName}}</span>  </label>
+          
+      </div> 
+      <div  class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label lblEdit ">YGS Customer Code : <span class="valueEdit">{{requestFormViewData.YGSCustomerCode}}</span></label>
+        
+      </div>
+      <div  class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label lblEdit ">YGS Customer Name : <span class="valueEdit">{{requestFormViewData.YGSCustomerName}}</span></label>
+          
+      </div>
+    </div>
+    <div class="row">
+      <!-- <div  class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label lblEdit ">Current Credit Limit</label>
+        <span class="valueEdit">{{requestFormViewData.CurrentCreditLimit}}</span>  
+      </div> -->
+      <div  class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label lblEdit ">Current Credit Amount :  <span class="valueEdit">{{requestFormViewData.CurrentCreditCurrency}}</span></label>
+           
+      </div> 
+      <!-- <div  class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label lblEdit ">Proposed Credit Limit</label>
+        <span class="valueEdit">{{requestFormViewData.ProposedCreditLimit}}</span> 
+      </div> -->
+      <div  class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label lblEdit ">Proposed Credit Amount : <span class="valueEdit">{{requestFormViewData.ProposedCreditCurrency}}</span></label>
+            
+      </div> 
+    </div>
+    <div class="row">
+      <div  class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label lblEdit ">Current payment terms in days : <span class="valueEdit">{{requestFormViewData.CurrentPaymentTermsDays}}</span></label>
+           
+      </div>
+      <div  class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label lblEdit ">Proposed payment terms in days : <span class="valueEdit">{{requestFormViewData.ProposedPaymentTermsDays}}</span></label>
+                   
+      </div> 
+      <div  class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <label class="form-label lblEdit ">Reason of increase in credit limit/paymet terms : 
+        <span class="valueEdit">{{requestFormViewData.PaymentTermsIncreaseReason}}</span></label>     
+      </div> 
+    </div>   
+      
+     <div class="row">
+      <div class="col-sm-3 col-md-3 col-lg-3">
+        <label class="form-label lblEdit ">Order Back log as per YGS as on : 
+        <span class="valueEdit">{{requestFormViewData.YGSOrderBackLogOnDate}}</span></label>     
+      </div>
+      <div class="col-sm-3 col-md-3 col-lg-3">
+        <label class="form-label lblEdit ">Order Back log as per YGS Amount : 
+        <span class="valueEdit">{{requestFormViewData.YGSOrderBackLog}}</span></label>
+      </div>
+      <div class="col-sm-3 col-md-3 col-lg-3">
+        <label class="form-label lblEdit ">Current Account Receivble as on : 
+        <span class="valueEdit">{{requestFormViewData.ARAmountOnDate}}</span></label>   
+      </div>
+      <div class="col-sm-3 col-md-3 col-lg-3">
+        <label class="form-label lblEdit ">Current Account Receivble : 
+        <span class="valueEdit">{{requestFormViewData.ARAmount}}</span></label>
+      </div>
+    </div> 
+    <div class="row">
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <label class="form-label lblEdit ">If overdue,then overdue A/R value beyond 90days at legal entity as on :
+        <span class="valueEdit">{{requestFormViewData.OverdueARValueBeyond90daysOnDate}}</span></label>
+      </div>
+      <div class="col-sm-6 col-md-6 col-lg-6">
+        <label class="form-label lblEdit ">A/R value beyond 90days at legal entity : 
+        <span class="valueEdit">{{requestFormViewData.OverdueARValueBeyond90days}}</span></label>    
+      
+      </div>
+    </div>
+    <div class="row">
+      
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <label class="form-label lblEdit ">Any Litigation with customer :
+        <span class="valueEdit">{{requestFormViewData.CustomerLitigation}}</span></label>    
+      </div>
+      <div  class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <label class="form-label lblEdit ">Litigation summary with customer :
+        <span class="valueEdit">{{requestFormViewData.LitigationSummary}}</span></label>    
+      </div>
+      <div  class="col-lg-2 col-md-2 col-sm-2 form-group">
+        <!-- <label class="form-label lblEdit ">Enter value</label>
+        <input type="text"  formControlName="CompanyName" placeholder="" id="CompanyName" name="CompanyName"  class="form-control">     -->
+      </div>
+      <div  class="col-lg-2 col-md-2 col-sm-2 form-group">
+       
+     </div>
+     
+    </div>
+              <!-- <div class="row head-text">
+                <div  class="col-lg-12 col-md-12 col-sm-12 form-group">
+                  <label for="docNo" class="form-label">Please provide below information:</label>
+                </div>
+          </div>
+          <div class="row">      
+              <div  class="col-lg-6 col-md-6 col-sm-6 form-group">
+                <label for="SaleOrderNo" class="form-label">Initiated By</label>
+                <input type="text"  formControlName="CompanyName" placeholder="" id="CompanyName" name="CompanyName"  class="form-control">    
+              </div>
+         
+              <div  class="col-lg-6 col-md-6 col-sm-6 form-group">
+                <label for="SaleOrderNo" class="form-label">Date</label>
+                <input type="text"  formControlName="CompanyName" placeholder="" id="CompanyName" name="CompanyName"  class="form-control">    
+              </div>    
+      </div> -->
+  
+          </div><br />
+          <div class="row">      
+            <div  class="col-lg-6 col-md-6 col-sm-6 form-group">
+              <label for="SaleOrderNo" class="form-label">Please Specify Reject summary</label>
+              <input type="text"  formControlName="CompanyName" placeholder="" id="CompanyName" name="CompanyName"  class="form-control">    
+            </div>
+        </div>
+    <div class="row" style="padding-left: 650px;">
+    <button type="button" class="btn btn-primary">Approve</button>
+    <button type="button" class="btn btn-primary" style="margin-left: 4px;">Reject</button>
+  </div>
+  
+      </div>
+       
+  
+  
+  
+  
+  
+  
