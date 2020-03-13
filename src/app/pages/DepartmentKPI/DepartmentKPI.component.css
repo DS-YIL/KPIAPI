@@ -1,0 +1,12 @@
+.disable-td{
+    pointer-events: none;
+}
+
+.old-car {
+    background-color: #1CA979 !important;
+    color: #ffffff !important;
+}
+body .ui-table .ui-table-thead > tr > th{
+    font-weight: normal; 
+    background-color: #d1d3f7;
+}

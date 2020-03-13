@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
 import{LoginService} from './Login.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Employee, DynamicSearchResult, KpiEmployee } from './Login.model';
 // import { constants } from 'src/app/Models/MPRConstants';
 import { first } from 'rxjs/operators';
@@ -13,9 +13,9 @@ import { MENU_ITEMS } from '../pages-menu';
   templateUrl: './Login.component.html'
 })
 export class LoginComponent implements OnInit {
-
+  deptId: any;
   // constructor(private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, private router: Router, public constants: constants) { }
-  constructor(private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef,  private router: Router, private loginService:LoginService  ) { }
+  constructor(private formBuilder: FormBuilder,private route: ActivatedRoute, private cdRef: ChangeDetectorRef,  private router: Router, private loginService:LoginService  ) { }
   public LoginForm: FormGroup;
   public employee: Employee;
   public LoginSubmitted: boolean = false;
@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
   allKpiEmployeeRole :KpiEmployee[]=[];
 
   ngOnInit() {
+   
   this.getAllKpiEmployeeByRole();
     //this.employee = new Employees();
     localStorage.removeItem('Employee');
@@ -70,7 +71,8 @@ export class LoginComponent implements OnInit {
                   MENU_ITEMS[2].hidden = true;  
                   MENU_ITEMS[3].hidden = false;
             this.LoginForm.reset();
-            this.router.navigateByUrl('/KPI/DepartmentKPI');
+            this.router.navigate(['/KPI/DepartmentKPI'], { queryParams: { Id: employeeRole.DeptId  } });
+            //this.router.navigate(['/KPI/DepartmentKPI'],{ queryParams: { deptId: employeeRole.deptId } });
           }
           // this.loginService.getAccessList(this.employee.RoleId)
           // .pipe(first())

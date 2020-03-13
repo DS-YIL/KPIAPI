@@ -37,10 +37,12 @@ export class UnsuccesKpiModel {
     April: any;
     May: any;
     July:any;
+    March:any;
     August:any;
     Year:string;
     Month:string;
     Actual:string;
+    DeptId:number;
     MgtKPICheckedStatus:boolean = false;
    }
 
@@ -49,3 +51,21 @@ export class UnsuccesKpiModel {
        DepartmentName:string;
        
    }
+
+   
+
+   export class AddMonthlyKpiModel{
+       KPIId:any;
+       Department:string;
+       CWQPNo:string;
+       QualityIndices:string;
+       Measurement:string;
+       Criteria:string;
+       Purpose:string;
+       ActualTarget:string;
+       Target:string;
+       KpiName:string;
+       Actual:string;
+       KpiEntryDate:any; 
+       
+}
