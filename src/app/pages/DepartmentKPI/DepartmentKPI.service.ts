@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Service } from '../Service/Service';
-import { AllKpiModel,UnsuccesKpiModel,AddMonthlyKpiModel } from './DepartmentKPI.model';
+import { AllKpiModel,UnsuccesKpiModel,AddMonthlyKpiModel, QKUserModel } from './DepartmentKPI.model';
 import { map } from 'rxjs/operators';
 
 
@@ -26,7 +26,10 @@ export class DepartmentKPIService {
   getUnsucessfullKpi(kpiId: any): Observable<any> {
     return this.http.get<any>(this.url + 'KPI/getUnsucessfullKpiById' + '?kpiId=' + kpiId);
   }
-
+  getQKUserByEmpId(empNo: any): Observable<QKUserModel[]> {
+    return this.http.get<QKUserModel[]>(this.url + 'KPI/getQKUserByEmpId' + '?empNo=' + empNo);
+  }
+  
   createMontlyKpi(addMonthlyKpiModel: AllKpiModel[]): Observable<any> {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
     return this.http.post<any>(this.url + 'KPI/AddMonthlyKPI/', addMonthlyKpiModel, httpOptions);

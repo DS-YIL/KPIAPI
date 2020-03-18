@@ -69,3 +69,16 @@ export class UnsuccesKpiModel {
        KpiEntryDate:any; 
        
 }
+export class OrgDepartmentModel{
+    OrgDepartmentId:number;
+    OrgDepartmentName:string;
+}
+export class QKUserModel{
+     KpiEmpId:number;
+     EmpId:any;
+     Active:boolean;
+    RoleId:number;
+    RoleName:string;
+    DeptId:number;
+    OrgDepartment:OrgDepartmentModel;
+}

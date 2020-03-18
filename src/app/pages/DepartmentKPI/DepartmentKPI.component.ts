@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ChangeDetectorRef, ViewChild, ElementRef } fr
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
 import { ChartModule } from 'primeng/chart';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import {AllKpiModel,UnsuccesKpiModel,Deptmodel,AddMonthlyKpiModel } from './DepartmentKPI.model';
+import {AllKpiModel,UnsuccesKpiModel,Deptmodel,AddMonthlyKpiModel, QKUserModel } from './DepartmentKPI.model';
 import {DepartmentKPIService } from './DepartmentKPI.service';
 import * as CryptoJS from 'crypto-js';
 import { NbToastrService } from '@nebular/theme';
@@ -17,11 +17,14 @@ export class DepartmentKPIComponent implements OnInit {
 
  
   dataList: AllKpiModel[];
+  QKUserList: QKUserModel[];
   cols: any[];
   displayDialog: boolean;
   deptId:any;
   returnValue:boolean;
- 
+  showDepartmentDropDown = false;
+  selectedDept:any;
+  showSubmitButton = false;
 
   constructor(
     private formBuilder: FormBuilder, chartModule: ChartModule,private departmentKPIService:DepartmentKPIService,
@@ -34,8 +37,18 @@ export class DepartmentKPIComponent implements OnInit {
         { field: 'Criteria', header: 'Criteria' },
         { field: 'Measurment', header: 'Measurement' },
         { field: 'Target', header: 'Target' },
-        { header: "April", editable: false },
-        { field: 'March', header: "March", editable: false }
+        { field: 'March', header: "March", editable: false },
+        { field: "April",header: "April", editable: false },  
+        { field: "May",header: "May", editable: false },       
+        { field: 'June', header: "June", editable: false },
+        //{ field: 'July', header: "July", editable: false },
+        // { field: 'August', header: "August", editable: false },
+        // { field: 'September', header: "September", editable: false },
+        // { field: 'October', header: "October", editable: false },
+        // { field: 'November', header: "November", editable: false },
+        // { field: 'December', header: "December", editable: false },
+        // { field: 'January', header: "January", editable: false },
+        // { field: 'February', header: "February", editable: false }
         
     ];
   }
@@ -46,13 +59,11 @@ export class DepartmentKPIComponent implements OnInit {
       this.deptId = params.Id;
       console.log(this.deptId); // popular
     });
-   const month = this. enableMonthColumn();
-   this.cols.forEach(x=>{
-    if(x.header == month){
-    x.editable = true;
-    }
-        });
+    const employee = JSON.parse(localStorage.getItem('Employee'));
+    console.log(employee);
+   
     this.loadDepartKpi(this.deptId);
+    this.loadQKUserByEmpId(employee.EmployeeNo)
    
     
   }
@@ -84,7 +95,30 @@ export class DepartmentKPIComponent implements OnInit {
     console.log(this.dataList);
   });
 }
- 
+loadQKUserByEmpId(empNo:any) {
+  this.departmentKPIService.getQKUserByEmpId(empNo).subscribe(x => {
+    this.QKUserList=x;
+    if(this.QKUserList.length>1){
+      this.showDepartmentDropDown=true;
+    }
+    console.log(this.QKUserList);
+  });
+}
+onSelectDpt(event){
+  this.selectedDept = event.target.value;
+  this.dataList = [];
+  this.loadDepartKpi(this.selectedDept);
+
+}
+editKPI(){
+  this.showSubmitButton = true;
+  const month = this. enableMonthColumn();
+   this.cols.forEach(x=>{
+    if(x.header == month){
+    x.editable = true;
+    }
+        });
+}
 showDialogToAdd() {
   this.displayDialog = true;
 }
