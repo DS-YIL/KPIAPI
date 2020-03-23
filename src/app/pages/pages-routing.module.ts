@@ -9,6 +9,7 @@ import {KPIComponent} from './KPI/KPI.component';
 import {YearlyKPIComponent} from './YearlyKPI/YearlyKPI.component';
 import {GraphicalKPIComponent} from './GraphicalYearlyKPI/GraphicalYearlyKPI.component';
 import {DepartmentKPIComponent} from './DepartmentKPI/DepartmentKPI.component';
+import {KpiApprovalComponent} from '../kpi-approval/kpi-approval.component';
 
 
 const routes: Routes = [{
@@ -28,6 +29,10 @@ const routes: Routes = [{
       // path: '',
       // redirectTo: 'MonthlyReport',
       // pathMatch: 'full',
+    },
+    {
+      path:"KPIApproval",
+      component:KpiApprovalComponent
     },
     { path: "Dashboard", component: DashboardComponent,canActivate: [AuthGuard] },  
     {path: "MonthlyReport", component:KPIComponent,canActivate: [AuthGuard]},

@@ -59,6 +59,7 @@ export class LoginService {
   logout() {
     //localStorage.removeItem('Employee');
     this.currentUserSubject.next(null);
+    //localStorage.removeItem('datalist');
     //window.location.reload();
   }
  

@@ -1,11 +1,13 @@
 import { Component, Input, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
-import{LoginService} from './Login.service';
+import { LoginService } from './Login.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Employee, DynamicSearchResult, KpiEmployee } from './Login.model';
 // import { constants } from 'src/app/Models/MPRConstants';
 import { first } from 'rxjs/operators';
 import { MENU_ITEMS } from '../pages-menu';
+import { isNullOrUndefined } from 'util';
+import { NbAuthService } from '@nebular/auth';
 
 
 @Component({
@@ -15,34 +17,66 @@ import { MENU_ITEMS } from '../pages-menu';
 export class LoginComponent implements OnInit {
   deptId: any;
   // constructor(private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, private router: Router, public constants: constants) { }
-  constructor(private formBuilder: FormBuilder,private route: ActivatedRoute, private cdRef: ChangeDetectorRef,  private router: Router, private loginService:LoginService  ) { }
+  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private authService: NbAuthService, private cdRef: ChangeDetectorRef, private router: Router, private loginService: LoginService) { }
   public LoginForm: FormGroup;
   public employee: Employee;
   public LoginSubmitted: boolean = false;
   public dynamicData = new DynamicSearchResult();
   public dataSaved: boolean = false;
-  allKpiEmployeeRole :KpiEmployee[]=[];
+  allKpiEmployeeRole: KpiEmployee[] = [];
+
 
   ngOnInit() {
-   
-  this.getAllKpiEmployeeByRole();
-    //this.employee = new Employees();
-    localStorage.removeItem('Employee');
-    localStorage.removeItem('currentUser');
-    //localStorage.removeItem('EmployeeList');
-    this.LoginForm = this.formBuilder.group({
-      DomainId: ['', [Validators.required]],
-      Password: ['', [Validators.required]],
-    });
+    const employee = JSON.parse(localStorage.getItem('Employee'));
+    const employeerole = JSON.parse(localStorage.getItem('EmployeeRole'));
+    let userDetails = this.route.snapshot.queryParams.userDetails;
+    if (userDetails != "" && !isNullOrUndefined(userDetails)) {
+      this.router.navigate(['/KPI/KPIApproval'], { queryParams: { userId: userDetails } });
+      // this.router.navigateByUrl("/KPIApproval");
+    }
+    else {
+      this.getAllKpiEmployeeByRole();
+      //this.employee = new Employees();
+
+      //localStorage.removeItem('Employee');
+      //localStorage.removeItem('currentUser');
+      //localStorage.removeItem('Employee');
+      if (employee != null && employeerole != null) {
+
+        if (employeerole.RoleId == 1) {
+          MENU_ITEMS[0].hidden = false;
+          MENU_ITEMS[1].hidden = false;
+          MENU_ITEMS[2].hidden = false;
+          MENU_ITEMS[3].hidden = true;
+          
+          this.router.navigateByUrl('/KPI/Dashboard');
+        }
+        else if (employeerole.RoleId == 2) {
+          MENU_ITEMS[0].hidden = true;
+          MENU_ITEMS[1].hidden = true;
+          MENU_ITEMS[2].hidden = true;
+          MENU_ITEMS[3].hidden = false;
+          
+          this.router.navigate(['/KPI/DepartmentKPI'], { queryParams: { Id: employeerole.DeptId } });
+          //this.router.navigate(['/KPI/DepartmentKPI'],{ queryParams: { deptId: employeeRole.deptId } });
+        }
+      }
+      //console.log(employee);
+      this.LoginForm = this.formBuilder.group({
+        DomainId: ['', [Validators.required]],
+        Password: ['', [Validators.required]],
+      });
+    }
   }
 
-  getAllKpiEmployeeByRole(){
-    this.loginService.getAllKpiEmployeeRole().subscribe(data=>{
+  getAllKpiEmployeeByRole() {
+    debugger;
+    this.loginService.getAllKpiEmployeeRole().subscribe(data => {
       this.allKpiEmployeeRole = data;
     })
   }
   Login() {
-   
+
     this.LoginSubmitted = true;
     if (this.LoginForm.invalid) {
       return;
@@ -54,24 +88,26 @@ export class LoginComponent implements OnInit {
       this.dynamicData.searchCondition = "DomainId='" + loginDetails.DomainId + "'";
       this.loginService.ValidateLoginCredentials(this.dynamicData).subscribe(data => {
         if (data.EmployeeNo != null) {
-          const role = this.allKpiEmployeeRole.filter(x=> x.EmpId ==data.EmployeeNo)
+          const role = this.allKpiEmployeeRole.filter(x => x.EmpId == data.EmployeeNo)
           const employeeRole = Object.assign({}, ...role);
-         // localStorage.setItem("AccessList", JSON.stringify(data));
-          if(employeeRole.RoleId == 1){
-                  MENU_ITEMS[0].hidden = false;
-                  MENU_ITEMS[1].hidden = false;
-                  MENU_ITEMS[2].hidden = false;  
-                  MENU_ITEMS[3].hidden = true;             
+          localStorage.setItem('EmployeeRole', JSON.stringify(employeeRole));
+          this.deptId = employeeRole.DeptId;
+          // localStorage.setItem("AccessList", JSON.stringify(data));
+          if (employeeRole.RoleId == 1) {
+            MENU_ITEMS[0].hidden = false;
+            MENU_ITEMS[1].hidden = false;
+            MENU_ITEMS[2].hidden = false;
+            MENU_ITEMS[3].hidden = true;
             this.LoginForm.reset();
             this.router.navigateByUrl('/KPI/Dashboard');
           }
-          else{
-                  MENU_ITEMS[0].hidden = true;
-                  MENU_ITEMS[1].hidden = true;
-                  MENU_ITEMS[2].hidden = true;  
-                  MENU_ITEMS[3].hidden = false;
+          else if (employeeRole.RoleId == 2) {
+            MENU_ITEMS[0].hidden = true;
+            MENU_ITEMS[1].hidden = true;
+            MENU_ITEMS[2].hidden = true;
+            MENU_ITEMS[3].hidden = false;
             this.LoginForm.reset();
-            this.router.navigate(['/KPI/DepartmentKPI'], { queryParams: { Id: employeeRole.DeptId  } });
+            this.router.navigate(['/KPI/DepartmentKPI'], { queryParams: { Id: employeeRole.DeptId } });
             //this.router.navigate(['/KPI/DepartmentKPI'],{ queryParams: { deptId: employeeRole.deptId } });
           }
           // this.loginService.getAccessList(this.employee.RoleId)
@@ -81,13 +117,13 @@ export class LoginComponent implements OnInit {
           //     this.LoginForm.reset();
           //     this.router.navigateByUrl('/KPI/Dashboard');
           //    });
-         
-           }
-         else {
-           window.alert("Invalid Domain Id & Password");
-           return;
-         }
-       });
+
+        }
+        else {
+          window.alert("Invalid Domain Id & Password");
+          return;
+        }
+      });
     }
   }
 }

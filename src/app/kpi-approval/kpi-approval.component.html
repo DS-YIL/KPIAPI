@@ -1,0 +1,31 @@
+
+<div class="container-fluid">
+    <!-- <nb-card> -->
+    
+       <h6 style="text-align: center"> KPI Approval Form</h6>  
+<p-table [columns]="cols" [value]="ApproveModel" [paginator]="true" [rows]="10">
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th *ngFor="let col of columns">
+                {{col.header}}
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+            <td *ngFor="let col of columns">
+                {{rowData[col.field]}}
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+<div mat-cell >
+    <button  (click)="Approve()" mat-raised-button >Approve</button>
+    <button  (click)="Reject()" mat-raised-button >Reject</button>
+</div>
+<div *ngIf="isRejected">
+    <input type="text" placeholder="Reason for rejection" [(ngModel)]="reason">
+    <button type="button" (click)="SubmitReason()" mat-raised-button >Submit</button>
+</div>
+<!-- </nb-card> -->
+</div>

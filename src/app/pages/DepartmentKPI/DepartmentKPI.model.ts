@@ -44,6 +44,7 @@ export class UnsuccesKpiModel {
     Actual:string;
     DeptId:number;
     MgtKPICheckedStatus:boolean = false;
+    UpdatedBy:any;
    }
 
    export class Deptmodel{

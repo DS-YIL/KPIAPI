@@ -1,7 +1,7 @@
 
 
 <div class="container-fluid">
-  <div class="row" *ngIf="showDepartmentDropDown">
+  <div class="row" style="margin-top: -15px; margin-bottom: -2px;" *ngIf="showDepartmentDropDown">
     <div  class="col-lg-4 col-md-4 col-sm-4 form-group">
       <label for="DivisionName" class="form-label">Department Name :</label>
       <select  placeholder="Dipartment"  id="dipartment" name="Dipartment"  class="form-control" (change)="onSelectDpt($event)">
@@ -12,13 +12,27 @@
   </div>
     <nb-card>
       <nb-card-body>
-       <button type="button" (click)="editKPI()"><i class="fa fa-pencil"></i> </button> 
-       <h6 style="text-align: center"> KPI Montly Entry Form</h6>  
+        <div class="row">
+          <div style="margin-bottom: 2px;" class="col-md-1">
+            <button type="button" class="btn btn-primary"  (click)="editKPI()"><i class="fa fa-pencil"></i> </button> 
+          </div>
+          <div style="text-align: center;" class="col-md-11">
+            <h6 > KPI Montly Entry Form</h6> 
+          </div>
+          
+          
+        </div>
+        
         <p-table [columns]="cols" [value]="dataList"  dataKey="ID" 
          [responsive]="true" [resizableColumns]="true" [autoLayout]="true" >
+         <ng-template pTemplate="header" let-columns>
+           <colgroup>
+          <col *ngFor="let col of columns"  style="width: 200px;">
+          </colgroup>
+         </ng-template>
           <ng-template pTemplate="header" let-columns>
               <tr>                              
-                  <th *ngFor="let col of columns" [style.width]="col.width" style="background-color: #007ad9;font-size:14px;color: #ffffff;">
+                  <th *ngFor="let col of columns"  style="background-color: #007ad9;font-size:14px;color: #ffffff;">
                       {{col.header}}
                   </th>
               </tr>

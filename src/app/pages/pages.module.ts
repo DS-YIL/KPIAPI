@@ -33,7 +33,7 @@ import {YearlyKPIComponent} from './YearlyKPI/YearlyKPI.component';
 import {GraphicalKPIComponent} from './GraphicalYearlyKPI/GraphicalYearlyKPI.component';
 import {DepartmentKPIComponent} from './DepartmentKPI/DepartmentKPI.component'
 import { ChartsModule } from 'ng2-charts';
-
+import { KpiApprovalComponent } from '../kpi-approval/kpi-approval.component';
 
 
 
@@ -79,8 +79,8 @@ import { ChartsModule } from 'ng2-charts';
     GraphicalKPIComponent,
     LoginComponent,
     ConfirmationDialogComponent,
-    DepartmentKPIComponent
-    
+    DepartmentKPIComponent,
+    KpiApprovalComponent
    
     
     
