@@ -27,7 +27,7 @@ export class KPIComponent implements OnInit {
   label: any[] = [];
   target: any[] = [];
   actual: any[] = [];
-  deptlist:any[]=[];
+  deptlist:DeptNameModel[]=[];
   selectedCity: any;
   barchartList:any[]=[];
   selectedMonth:any;
@@ -65,6 +65,7 @@ export class KPIComponent implements OnInit {
 
   ngOnInit() {
     this.loadKpiReport();
+    this.loadDeptName();
   }
 
   loadKpiReport() {
@@ -75,17 +76,23 @@ export class KPIComponent implements OnInit {
       var items = this.data
      
 
-      for (var item, i = 0; item = items[i++];) {
-        var name = item.DeptName;
-           if (!(name in lookup)) {
-          lookup[name] = 1;
-          this.deptlist.push(name);
-        }
-      }
+      // for (var item, i = 0; item = items[i++];) {
+      //   var name = item.MT_QK_KPI.DeptName;
+      //      if (!(name in lookup)) {
+      //     lookup[name] = 1;
+      //     this.deptlist.push(name);
+      //   }
+      // }
    
       console.log(this.data);
-      console.log(this.deptlist);
+      //console.log(this.deptlist);
     });
+  }
+
+  loadDeptName(){
+    this.kpiService.getDeptName().subscribe(data => {
+      this.deptlist = data; 
+    })
   }
   onSelectMonth(event){
     this.selectedMonth = event.target.value; 
@@ -99,7 +106,7 @@ export class KPIComponent implements OnInit {
   }
 filterUnsuccessKPI(){
   this.dataList = [];
-  this.dataList= this.dataListForFilter.filter(x=>(x.Target)-(+x.Actual)>0)
+  this.dataList= this.dataListForFilter.filter(x=>(x.MT_QK_KPI.Target)-(+x.Actual)>0)
 }
   filterKPI(){
     this.label = [];
@@ -113,8 +120,8 @@ filterUnsuccessKPI(){
       this.kpiMgtData.forEach(kpimg=>{
         if(kpimg.Month=== this.selectedMonth  && kpimg.Year == this.selectedYear ){
           this.actual.push(kpimg.Actual);
-          this.label.push(kpimg.KpiName);
-          this.target.push(kpimg.Target)
+          this.label.push(kpimg.MT_QK_KPI.KpiName);
+          this.target.push(kpimg.MT_QK_KPI.Target)
           this.dataList.push(kpimg);
           this.dataListForFilter.push(kpimg);
         }
@@ -123,10 +130,10 @@ filterUnsuccessKPI(){
     else{
 
       this.data.forEach(x => {
-        if(x.Month=== this.selectedMonth && x.DeptName == this.selectedDept && x.Year == this.selectedYear ){
+        if(x.Month=== this.selectedMonth && x.MT_QK_KPI.DeptId == this.selectedDept && x.Year == this.selectedYear ){
          this.actual.push(x.Actual);
-         this.label.push(x.KpiName);
-         this.target.push(x.Target)
+         this.label.push(x.MT_QK_KPI.KpiName);
+         this.target.push(x.MT_QK_KPI.Target)
          this.dataList.push(x);
          this.dataListForFilter.push(x);
        }

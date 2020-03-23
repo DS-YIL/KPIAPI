@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ChangeDetectorRef, ViewChild, ElementRef } fr
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
 import { ChartModule } from 'primeng/chart';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { KpiYearlyModel, DeptNameYearlyModel } from './YearlyKPI.model';
+import { KpiYearlyModel, DeptNameYearlyModel, DeptNameModel} from './YearlyKPI.model';
 import { YearlyKPIService } from './YearlyKPI.service';
 
 @Component({
@@ -15,11 +15,13 @@ export class YearlyKPIComponent implements OnInit {
   data: KpiYearlyModel[];
   dataList: KpiYearlyModel[];
   value: boolean;
+  //deptname: DeptNameModel[];
   deptname: DeptNameYearlyModel[];
-  deptlist:any[]=[];
+  deptlist:DeptNameModel[]=[];
   selectedCity: any;
   selectedYear:any;
   selectedDept:any;
+  selectedDeptName:any;
   showSelectedTitle = false;
   AllItems =[];
   mon = [];
@@ -33,6 +35,7 @@ export class YearlyKPIComponent implements OnInit {
 
   ngOnInit() {
     this.loadKpiYearlyReport();
+    this.loadAllDeptName();
   }
 
   loadKpiYearlyReport() {
@@ -48,29 +51,35 @@ export class YearlyKPIComponent implements OnInit {
       var items = this.data
      
 
-      for (var item, i = 0; item = items[i++];) {
-        var name = item.DeptName;
-        //var name = item.CWQPNo;
+      // for (var item, i = 0; item = items[i++];) {
+      //   var name = item.DeptName;
+      //   //var name = item.CWQPNo;
 
-        if (!(name in lookup)) {
-          lookup[name] = 1;
-          this.deptlist.push(name);
-        }
-      }
+      //   if (!(name in lookup)) {
+      //     lookup[name] = 1;
+      //     this.deptlist.push(name);
+      //   }
+      // }
      
       console.log(this.data);
-      console.log(this.deptlist);
+      //console.log(this.deptlist);
     });
+  }
+
+  loadAllDeptName(){
+    this.yearlyKPIService.getDeptName().subscribe(data => {
+      this.deptlist = data; 
+    })
   }
 
   getPivotData(pivotData:KpiYearlyModel[]){
   
     const results = []; var checks = [];
     for (var l = 0; l < pivotData.length; l++) {
-        if (!checks[pivotData[l].QualityIndices]) {
+        if (!checks[pivotData[l].MT_QK_KPI.QualityIndices]) {
             results.push(pivotData[l]);
         }
-        checks[pivotData[l].QualityIndices] = true;
+        checks[pivotData[l].MT_QK_KPI.QualityIndices] = true;
     }
  console.log(results)
     // const result = [];
@@ -91,21 +100,22 @@ export class YearlyKPIComponent implements OnInit {
         Month:pivotData.find(v=>v.Month===m).Month
       };
     });
-    const kpi = Array.from(new Set(pivotData.map(obj=>obj.KpiName)))
+    const kpi = Array.from(new Set(pivotData.map(obj=>obj.MT_QK_KPI.KpiName)))
     .map(m=>{
       return{
-        KpiName:pivotData.find(v=>v.KpiName===m).KpiName
+        KpiName:pivotData.find(v=>v.MT_QK_KPI.KpiName===m).MT_QK_KPI.KpiName
       };
     });
     for(let i=0; i<results.length;i++){
       const mem ={};
-      const Department = results[i].DeptName;
-      const CWQPNo = results[i].KpiName;
-      const QualityIndices = results[i].QualityIndices;
-      const Criteria = results[i].Criteria;
-      const Measurement = results[i].Measurment;
-      const Target = results[i].Target;
+      const Department = results[i].MT_QK_KPI.DeptName;
+      const CWQPNo = results[i].MT_QK_KPI.KpiName;
+      const QualityIndices = results[i].MT_QK_KPI.QualityIndices;
+      const Criteria = results[i].MT_QK_KPI.Criteria;
+      const Measurement = results[i].MT_QK_KPI.Measurment;
+      const Target = results[i].MT_QK_KPI.Target;
       const Year = results[i].Year;
+      const DeptId = results[i].MT_QK_KPI.DeptId;
       const PivotDataList = results[i];
       
       mem['Department'] = Department;
@@ -115,6 +125,7 @@ export class YearlyKPIComponent implements OnInit {
       mem['Measurement'] = Measurement;
       mem['Target'] = Target;
       mem['Year'] = Year;
+      mem['DeptId'] = DeptId;
     //for(let p=0;p<pivotData.length;p++){
       
     
@@ -124,7 +135,7 @@ export class YearlyKPIComponent implements OnInit {
       
       for(let p=0;p<pivotData.length;p++){
        const currentpivot = pivotData[p];
-       if(currentpivot.DeptName== PivotDataList.DeptName &&  currentpivot.KpiName == PivotDataList.KpiName){
+       if(currentpivot.MT_QK_KPI.DeptId== PivotDataList.MT_QK_KPI.DeptId &&  currentpivot.MT_QK_KPI.KpiName == PivotDataList.MT_QK_KPI.KpiName){
         for(let j = 0; j<month.length; j++){
             
           if(currentpivot.Month == month[j].Month){
@@ -166,19 +177,22 @@ export class YearlyKPIComponent implements OnInit {
   
   onSelectDpt(event){
     this.selectedDept = event.target.value;
+    const deptName = this.deptlist.filter(x=>x.DeptId == +(this.selectedDept));
+    this.selectedDeptName = Object.assign({}, ...deptName);
+
      }
 
      onSelectYear(event){
-      this.selectedYear = [];
+      this.selectedYear = '';
       this.selectedYear = event.target.value;
     }
 
     filterKPI(){
      
       this.dataList = [];
-      
+      const selecteddept = +this.selectedDept
         this.AllItems.forEach(x => {
-           if(x.Department == this.selectedDept && x.Year == this.selectedYear  ){            
+           if(x.DeptId == selecteddept && x.Year == this.selectedYear  ){            
             this.dataList.push(x);
           }
         

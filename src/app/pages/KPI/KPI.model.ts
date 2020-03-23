@@ -1,3 +1,33 @@
+export class kpiMaster{
+    ID:any; 
+    KpiId:any;
+    Department:string;
+    DeptName:string;
+    DocumentNo:string   
+    DocNo:string;
+    Measurment:string;
+    RevNo:string    
+    Date:any; 
+    CWQPNo:string; 
+    Year:string; 
+    Actual:string;
+    MgtKPICheckedStatus:any;
+    Month:any;   
+    QualityIndices:string;
+    Measurement:string;
+    Criteria:string;
+    Purpose:string;
+    ActualTarget:string;
+    Unitofmeasurement:string;
+    Target:any;
+    KpiName:string;
+    DeptId:any; 
+    EnteredBy:string;
+    EnteredOn:any; 
+    InUse:any;
+    //OrgDepartment:OrgDepartmentModel;    
+}
+
 export class KpiModel {
  KpiId: any;
  KpiName:string;
@@ -19,11 +49,12 @@ export class KpiModel {
  Month:string;
  Actual:string;
  MgtKPICheckedStatus:boolean = false;
+ MT_QK_KPI:kpiMaster;
 }
 
 export class DeptNameModel{
-    //DeptId:any;
-    DepName;
+    DeptId:any;
+    DepName:any;
 }
 
 export class TopKpiModel {

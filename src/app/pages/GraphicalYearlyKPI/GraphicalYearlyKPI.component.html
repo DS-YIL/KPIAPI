@@ -5,7 +5,7 @@
             <label for="DivisionName" class="form-label">Department Name :</label>
             <select  placeholder="Dipartment"  id="dipartment" name="Dipartment" (change)="onSelectDpt($event)" class="form-control">
                  <option value="0">Select Department</option> 
-                <option *ngFor="let data of deptDropDownList">{{data}} </option> 
+                <option *ngFor="let data of deptDropDownList">{{data.DepName}} </option> 
               </select>            
           </div>        
           <div  class="col-lg-3 col-md-3 col-sm-3 form-group">

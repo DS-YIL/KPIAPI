@@ -15,7 +15,7 @@ import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
   styleUrls: ['./GraphicalYearlyKPI.component.css']
 })
 export class GraphicalKPIComponent implements OnInit {
-
+  selectedDeptName:any;
   data: KpiGraphicalModel[];
   dataList: KpiGraphicalModel[];
   value: boolean;
@@ -71,6 +71,7 @@ export class GraphicalKPIComponent implements OnInit {
 
   ngOnInit() {
     this.loadGraphicalKpiReport();
+    this.loadDepName();
   }
 
   loadGraphicalKpiReport() {
@@ -81,25 +82,25 @@ export class GraphicalKPIComponent implements OnInit {
       this.getPivotData(x);
       this.data.forEach(x => {
 
-        this.target.push(x.Target);
+        this.target.push(x.MT_QK_KPI.Target);
         this.actual.push(x.April); 
         //this.actual.push(x.Actual);      
-        this.label.push(x.CWQPNo);
+        this.label.push(x.MT_QK_KPI.KpiName);
         //this.label.push(x.KpiName);
       })
       var lookup = {};
       var items = this.data
     
    
-      for (var item, i = 0; item = items[i++];) {
-        var name = item.DeptName;
-        //var name = item.CWQPNo;
+      // for (var item, i = 0; item = items[i++];) {
+      //   var name = item.DeptName;
+      //   //var name = item.CWQPNo;
 
-        if (!(name in lookup)) {
-          lookup[name] = 1;
-          this.deptDropDownList.push(name);
-        }
-      }
+      //   if (!(name in lookup)) {
+      //     lookup[name] = 1;
+      //     this.deptDropDownList.push(name);
+      //   }
+      // }
       
       this.loadBarChart(this.target, this.actual, this.label);
       this.loadLineChart(this.target, this.actual, this.label);
@@ -109,52 +110,56 @@ export class GraphicalKPIComponent implements OnInit {
     });
   }
 
+  loadDepName(){
+    this.graphicalKPIService.getDeptName().subscribe(data => {
+      this.deptDropDownList = data; 
+    })
+  }
   getPivotData(pivotData:KpiGraphicalModel[]){
   
     const results = []; var checks = [];
     for (var l = 0; l < pivotData.length; l++) {
-        if (!checks[pivotData[l].QualityIndices]) {
+        if (!checks[pivotData[l].MT_QK_KPI.QualityIndices]) {
             results.push(pivotData[l]);
         }
-        checks[pivotData[l].QualityIndices] = true;
+        checks[pivotData[l].MT_QK_KPI.QualityIndices] = true;
     }
-    
     const month = Array.from(new Set(pivotData.map(obj=>obj.Month)))
     .map(m=>{
       return{
         Month:pivotData.find(v=>v.Month===m).Month
       };
     });
-
     this.monthList = month;
     console.log(this.monthList);
-    const qc = Array.from(new Set(pivotData.map(obj=>obj.QualityIndices)))
+    const qc = Array.from(new Set(pivotData.map(obj=>obj.MT_QK_KPI.QualityIndices)))
     .map(m=>{
       return{
-        QualityIndices:pivotData.find(v=>v.QualityIndices===m).QualityIndices
+        QualityIndices:pivotData.find(v=>v.MT_QK_KPI.QualityIndices===m).MT_QK_KPI.QualityIndices
       };
     });
     
     this.qc = qc;
     console.log(this.qc);
-    const kpi = Array.from(new Set(pivotData.map(obj=>obj.KpiName)))
+    const kpi = Array.from(new Set(pivotData.map(obj=>obj.MT_QK_KPI.KpiName)))
     .map(m=>{
       return{
-        KpiName:pivotData.find(v=>v.KpiName===m).KpiName
+        KpiName:pivotData.find(v=>v.MT_QK_KPI.KpiName===m).MT_QK_KPI.KpiName
       };
     });
     this.kpiList = kpi;
+    console.log(this.kpiList);
     for(let i=0; i<results.length;i++){
       const mem ={};
-      const Department = results[i].DeptName;
-      const CWQPNo = results[i].KpiName;
-      const QualityIndices = results[i].QualityIndices;
-      const Criteria = results[i].Criteria;
-      const Measurement = results[i].Measurment;
-      const Target = results[i].Target;
+      const Department = results[i].MT_QK_KPI.DeptName;
+      const CWQPNo = results[i].MT_QK_KPI.KpiName;
+      const QualityIndices = results[i].MT_QK_KPI.QualityIndices;
+      const Criteria = results[i].MT_QK_KPI.Criteria;
+      const Measurement = results[i].MT_QK_KPI.Measurment;
+      const Target = results[i].MT_QK_KPI.Target;
       const Year = results[i].Year;
+      const DeptId = results[i].MT_QK_KPI.DeptId;
       const PivotDataList = results[i];
-      
       mem['Department'] = Department;
       mem['CWQPNo'] = CWQPNo;
       mem['QualityIndices'] = QualityIndices;
@@ -162,42 +167,117 @@ export class GraphicalKPIComponent implements OnInit {
       mem['Measurement'] = Measurement;
       mem['Target'] = Target;
       mem['Year'] = Year;
-      
+      mem['DeptId'] = DeptId; 
       for(let p=0;p<pivotData.length;p++){
        const currentpivot = pivotData[p];
-      // if(currentpivot.DeptName== PivotDataList.DeptName &&  currentpivot.KpiName == PivotDataList.KpiName){
-        if(currentpivot.DeptName== PivotDataList.DeptName &&  currentpivot.KpiName == PivotDataList.KpiName
-           && currentpivot.QualityIndices == PivotDataList.QualityIndices){
+       if(currentpivot.MT_QK_KPI.DeptId== PivotDataList.MT_QK_KPI.DeptId &&  currentpivot.MT_QK_KPI.KpiName == PivotDataList.MT_QK_KPI.KpiName){
         for(let j = 0; j<month.length; j++){
             
           if(currentpivot.Month == month[j].Month){
            
            mem[month[j].Month] = currentpivot.Actual
-         
+          console.log(mem[month[j].Month]);
           }
-        //      else{
-        //  mem[month[j].Month]= '';
-        // }
            }
-       }
-          
+       }      
         }
   this.AllItems.push(mem);
   this.dataList=this.AllItems;
-}
-   console.log(this.AllItems); 
+  //console.log(this.dataList);
+}   
   }
+
+//   getPivotData(pivotData:KpiGraphicalModel[]){
+  
+//     const results = []; var checks = [];
+//     for (var l = 0; l < pivotData.length; l++) {
+//         if (!checks[pivotData[l].QualityIndices]) {
+//             results.push(pivotData[l]);
+//         }
+//         checks[pivotData[l].QualityIndices] = true;
+//     }
+    
+//     const month = Array.from(new Set(pivotData.map(obj=>obj.Month)))
+//     .map(m=>{
+//       return{
+//         Month:pivotData.find(v=>v.Month===m).Month
+//       };
+//     });
+
+//     this.monthList = month;
+//     console.log(this.monthList);
+//     const qc = Array.from(new Set(pivotData.map(obj=>obj.QualityIndices)))
+//     .map(m=>{
+//       return{
+//         QualityIndices:pivotData.find(v=>v.QualityIndices===m).QualityIndices
+//       };
+//     });
+    
+//     this.qc = qc;
+//     console.log(this.qc);
+//     const kpi = Array.from(new Set(pivotData.map(obj=>obj.KpiName)))
+//     .map(m=>{
+//       return{
+//         KpiName:pivotData.find(v=>v.KpiName===m).KpiName
+//       };
+//     });
+//     this.kpiList = kpi;
+//     for(let i=0; i<results.length;i++){
+//       const mem ={};
+//       const Department = results[i].DeptName;
+//       const CWQPNo = results[i].KpiName;
+//       const QualityIndices = results[i].QualityIndices;
+//       const Criteria = results[i].Criteria;
+//       const Measurement = results[i].Measurment;
+//       const Target = results[i].Target;
+//       const Year = results[i].Year;
+//       const PivotDataList = results[i];
+      
+//       mem['Department'] = Department;
+//       mem['CWQPNo'] = CWQPNo;
+//       mem['QualityIndices'] = QualityIndices;
+//       mem['Criteria'] = Criteria;
+//       mem['Measurement'] = Measurement;
+//       mem['Target'] = Target;
+//       mem['Year'] = Year;
+      
+//       for(let p=0;p<pivotData.length;p++){
+//        const currentpivot = pivotData[p];
+//       // if(currentpivot.DeptName== PivotDataList.DeptName &&  currentpivot.KpiName == PivotDataList.KpiName){
+//         if(currentpivot.DeptName== PivotDataList.DeptName &&  currentpivot.KpiName == PivotDataList.KpiName
+//            && currentpivot.QualityIndices == PivotDataList.QualityIndices){
+//         for(let j = 0; j<month.length; j++){
+            
+//           if(currentpivot.Month == month[j].Month){
+           
+//            mem[month[j].Month] = currentpivot.Actual
+         
+//           }
+//         //      else{
+//         //  mem[month[j].Month]= '';
+//         // }
+//            }
+//        }
+          
+//         }
+//   this.AllItems.push(mem);
+//   this.dataList=this.AllItems;
+// }
+//    console.log(this.AllItems); 
+//   }
  
   onSelectDpt(event){
     
     this.selectedDept = event.target.value;
-    
+    const deptName = this.deptDropDownList.filter(x=>x.DeptId == +(this.selectedDept));
+    this.selectedDeptName = Object.assign({}, ...deptName);
+    const selecteddept = +this.selectedDept
     const dept = {};
-  const deptdata = this.data.filter(x=>x.DeptName == this.selectedDept)
+  const deptdata = this.data.filter(x=>x.MT_QK_KPI.DeptId == selecteddept)
   deptdata.forEach(d=>{
-    dept['Department'] =d.DeptName;
-    dept['KpiName']= d.KpiName;
-    dept['QualityIndices'] = d.QualityIndices;
+    dept['Department'] =d.MT_QK_KPI.DeptName;
+    dept['KpiName']= d.MT_QK_KPI.KpiName;
+    dept['QualityIndices'] = d.MT_QK_KPI.QualityIndices;
     
   })
   this.deptlist.push(dept);
@@ -222,7 +302,13 @@ export class GraphicalKPIComponent implements OnInit {
         var groups = {};
         for (var i = 0; i < data.length; i++)
         {
+          if(key=="KpiName"){
             var row = data[i];
+          }
+          else{
+            var row = data[i].MT_QK_KPI;
+          }
+           
             var groupValue = row[key];
             //groups[groupValue] = groupValue
     
@@ -292,6 +378,8 @@ export class GraphicalKPIComponent implements OnInit {
       if(ch.KpiName == kpiname){
         if(check == 0 ){
                 ch.KpiList.forEach(a=>{
+              //const kpidetaildata = this.data.filter(x=>x.MT_QK_KPI.KpiName) 
+              //const result = Object.assign({}, ...kpidetaildata);
                  if(a.Year == this.selectedYear){
                   this.actual.push(a.Actual);
                   this.label.push(a.Month);
@@ -306,192 +394,8 @@ export class GraphicalKPIComponent implements OnInit {
                check--;
       }
       })
-        // switch(ch.KpiName){
-        //   case "CWQP-1A":
-        //     if(check == 0 ){
-        //       ch.KpiList.forEach(a=>{
-        //        if(a.Year == this.selectedYear){
-        //         this.actual.push(a.Actual);
-        //         this.label.push(a.Month);
-        //         this.target.push(a.Target)
-        //          check = check+1;
-        //        }  
-
-        //       })
-        //       this.loadAllKpiDeptWise(this.target, this.actual, this.label,'CWQP-1A');
-        //      }  
-             
-        //      check--;
-        //   break;
-        //   case "CWQP-1B":
-        //     if(check == 0){
-        //       ch.KpiList.forEach(a=>{
-        //         if(a.Year == this.selectedYear){
-        //          this.actual.push(a.Actual);
-        //          //this.label.push(a.Month);
-        //          this.target.push(a.Target)
-        //           check = check+1;
-        //         }  
-        //         else if(this.label.length==0) {
-        //           this.label.push(a.Month);
-        //         }                             
-        //        })
-        //       this.loadAllKpiDeptWise(this.target, this.actual, this.label,'CWQP-1B');
-        //      }  
-             
-        //      check--;
-        //     break;
-        //     case "CWQP-1C":
-        //       if(check == 0){
-        //         ch.KpiList.forEach(a=>{
-        //           if(a.Year == this.selectedYear){
-        //            this.actual.push(a.Actual);
-        //            //this.label.push(a.Month);
-        //            this.target.push(a.Target)
-        //             check = check+1;
-        //           } 
-        //           else if(this.label.length==0) {
-        //             this.label.push(a.Month);
-        //           }                           
-        //          })
-        //         this.loadAllKpiDeptWise(this.target, this.actual, this.label,'CWQP-1C');
-        //        }  
-               
-        //        check--;
-        //       break;
-        //       case "CWQP-3A":
-        //         if(check == 0){
-        //           ch.KpiList.forEach(a=>{
-        //             if(a.Year == this.selectedYear){
-        //              this.actual.push(a.Actual);
-        //              //this.label.push(a.Month);
-        //              this.target.push(a.Target)
-        //               check = check+1;
-        //             } 
-        //             else if(this.label.length==0) {
-        //               this.label.push(a.Month);
-        //             }                              
-        //            })
-        //           this.loadAllKpiDeptWise(this.target, this.actual, this.label,'CWQP-3A');
-        //          }  
-                 
-        //          check--;
-        //         break;
-        //         case "CWQP-3B":
-        //           if(check == 0){
-        //             ch.KpiList.forEach(a=>{
-        //               if(a.Year == this.selectedYear){
-        //                this.actual.push(a.Actual);
-        //               // this.label.push(a.Month);
-        //                this.target.push(a.Target)
-        //                 check = check+1;
-        //               }   
-        //               else if(this.label.length==0) {
-        //                 this.label.push(a.Month);
-        //               }                            
-        //              })
-        //             this.loadAllKpiDeptWise(this.target, this.actual, this.label,'CWQP-3B');
-        //            }  
-                   
-        //            check--;
-        //           break;
-        //           case "CWQP-3C":
-        //             if(check == 0){
-        //               ch.KpiList.forEach(a=>{
-        //                 if(a.Year == this.selectedYear){
-        //                  this.actual.push(a.Actual);
-        //                 // this.label.push(a.Month);
-        //                  this.target.push(a.Target)
-        //                   check = check+1;
-        //                 }  
-        //                 else if(this.label.length==0) {
-        //                   this.label.push(a.Month);
-        //                 }                             
-        //                })
-        //               this.loadAllKpiDeptWise(this.target, this.actual, this.label,'CWQP-3C');
-        //              }  
-                     
-        //              check--;
-        //           break;
-        //           case "CWQP-4A":
-        //             if(check == 0){
-        //               ch.KpiList.forEach(a=>{
-        //                 if(a.Year == this.selectedYear){
-        //                  this.actual.push(a.Actual);
-        //                  //this.label.push(a.Month);
-        //                  this.target.push(a.Target)
-        //                   check = check+1;
-        //                 }
-        //                 else if(this.label.length==0) {
-        //                   this.label.push(a.Month);
-        //                 }                               
-        //                })
-        //               this.loadAllKpiDeptWise(this.target, this.actual, this.label,'CWQP-4A');
-        //              }  
-                     
-        //              check--;
-        //           break;
-        //           case "CWQP-4B":
-        //             if(check == 0){
-        //               ch.KpiList.forEach(a=>{
-        //                 if(a.Year == this.selectedYear){
-        //                  this.actual.push(a.Actual);
-        //                 // this.label.push(a.Month);
-        //                  this.target.push(a.Target)
-        //                   check = check+1;
-        //                 }    
-        //                 else if(this.label.length==0) {
-        //                   this.label.push(a.Month);
-        //                 }                           
-        //                })
-        //               this.loadAllKpiDeptWise(this.target, this.actual, this.label,'CWQP-4B');
-        //              }  
-                     
-        //              check--;
-        //           break;
-        //           case "CWQP-4C":
-        //             if(check == 0){
-        //               ch.KpiList.forEach(a=>{
-        //                 if(a.Year == this.selectedYear){
-        //                  this.actual.push(a.Actual);
-        //                 // this.label.push(a.Month);
-        //                  this.target.push(a.Target)
-        //                   check = check+1;
-        //                 }   
-        //                 else if(this.label.length==0) {
-        //                   this.label.push(a.Month);
-        //                 }                            
-        //                })
-        //               this.loadAllKpiDeptWise(this.target, this.actual, this.label,'CWQP-4C');
-        //              }  
-                     
-        //              check--;
-        //           break;
-        //           case "CWQP-5A":
-        //             if(check == 0){
-        //               ch.KpiList.forEach(a=>{
-        //                 if(a.Year == this.selectedYear){
-        //                  this.actual.push(a.Actual);
-        //                  //this.label.push(a.Month);
-        //                  this.target.push(a.Target)
-        //                   check = check+1;
-        //                 }   
-        //                 else if(this.label.length==0) {
-        //                   this.label.push(a.Month);
-        //                 }                            
-        //                })
-        //               this.loadAllKpiDeptWise(this.target, this.actual, this.label,'CWQP-5A');
-        //              }  
-                     
-        //              check--;
-        //           break;
-        // }
-      
-      
     })
     this.showalldeptwise = true;
-//console.log(this.keyModel);
-      //if(groupedData.)
     }
     Submit(){
       this.showAllKpiDeptWise();
@@ -505,13 +409,14 @@ export class GraphicalKPIComponent implements OnInit {
           
       
           this.data.forEach(x => {
-             if(x.DeptName == this.selectedDept && x.Year == this.selectedYear ){
+            const selecteddept = +this.selectedDept
+             if(x.MT_QK_KPI.DeptId == selecteddept && x.Year == this.selectedYear ){
               this.dataList.push(x);
               //console.log(this.dataList);
               //this.actual.push(x.Actual)
               this.actual.push(x.July);
               this.label.push(x.Month);
-              this.target.push(x.Target)
+              this.target.push(x.MT_QK_KPI.Target)
             }
          
           
@@ -679,7 +584,8 @@ export class GraphicalKPIComponent implements OnInit {
     //   this.label.push(m.Month);
     // })
         this.dataList.forEach(x => {
-           if(x.DeptName == this.selectedDept && x.Year == this.selectedYear ){
+          const selectedDeptId= +this.selectedDept
+           if(x.MT_QK_KPI.DeptId == selectedDeptId && x.Year == this.selectedYear ){
            //if(x.)
             this.actual.push(x.July);
             this.label.push(x.Month);

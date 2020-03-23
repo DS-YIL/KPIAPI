@@ -7,7 +7,7 @@
                 <select placeholder="Dipartment" id="dipartment" name="Dipartment" (change)="onSelectDpt($event)"
                     class="form-control">
                     <option value="All Department">All</option>
-                    <option *ngFor="let data of deptlist">{{data}} </option>
+                    <option *ngFor="let data of deptlist" value={{data.DeptId}}>{{data.DepName}} </option>
                 </select>
 
             </div>
@@ -39,7 +39,7 @@
                     <ng-template pTemplate="caption">
                         QHSE KPI - Report
                         <div style="text-align: left" *ngIf="showSelectedTitle">
-                            <span>{{selectedDept}}</span> &nbsp;
+                            <span>{{selectedDeptName.DepName}}</span> &nbsp;
                             <span>{{selectedYear}}</span>
                         </div>
                         <div style="text-align: right">

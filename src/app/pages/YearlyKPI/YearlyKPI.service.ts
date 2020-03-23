@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Service } from '../Service/Service';
-import { KpiYearlyModel } from './YearlyKPI.model';
+import { KpiYearlyModel,DeptNameModel } from './YearlyKPI.model';
 import { map } from 'rxjs/operators';
 
 
@@ -16,6 +16,9 @@ export class YearlyKPIService {
   public httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
 
   
+  getDeptName(): Observable<DeptNameModel[]> {
+    return this.http.get<DeptNameModel[]>(this.url + 'KPI/getDeptName');
+  }
   getAllKpi(): Observable<KpiYearlyModel[]> {
     return this.http.get<KpiYearlyModel[]>(this.url + 'KPI/getAllkpi');
   }

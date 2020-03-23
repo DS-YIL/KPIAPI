@@ -7,7 +7,7 @@
             <select  placeholder="Dipartment"  id="dipartment" name="Dipartment" (change)="onSelectDpt($event)" class="form-control">
                 <option value="0">Select Department</option>
                 <option value="KPI Management">Management KPI</option>
-                <option *ngFor="let data of deptlist">{{data}} </option> 
+                <option *ngFor="let data of deptlist" value={{data.DeptId}}>{{data.DepName}} </option> 
               </select> 
             
           </div>
@@ -105,7 +105,7 @@
             </td> -->
             <td>
                 
-                        {{rowData.KpiName}}
+                        {{rowData.MT_QK_KPI.KpiName}}
                  
             </td> 
       
@@ -115,7 +115,7 @@
                         <input pInputText type="text" [(ngModel)]="rowData.QualityIndices" required>
                     </ng-template>
                     <ng-template pTemplate="output">
-                        {{rowData.QualityIndices}}
+                        {{rowData.MT_QK_KPI.QualityIndices}}
                     </ng-template>
                 </p-cellEditor>
             </td>
@@ -125,7 +125,7 @@
                       <input pInputText type="text" [(ngModel)]="rowData.Criteria" required> 
                     </ng-template>
                     <ng-template pTemplate="output">
-                        {{rowData.Criteria}}
+                        {{rowData.MT_QK_KPI.Criteria}}
                     </ng-template>
                 </p-cellEditor>
             </td>       
@@ -135,7 +135,7 @@
                         <input pInputText type="text" [(ngModel)]="rowData.Measurment">
                     </ng-template>
                     <ng-template pTemplate="output">
-                        {{rowData.Measurment}}
+                        {{rowData.MT_QK_KPI.Measurment}}
                     </ng-template>
                 </p-cellEditor>
             </td>
@@ -155,11 +155,11 @@
                         <input pInputText type="text" [(ngModel)]="rowData.Target">
                     </ng-template>
                     <ng-template pTemplate="output">
-                        {{rowData.Target}}
+                        {{rowData.MT_QK_KPI.Target}}
                     </ng-template>
                 </p-cellEditor>
             </td>
-            <td [ngClass]="rowData.Target-rowData.Actual>0 ? 'old-car' : null">
+            <td [ngClass]="rowData.MT_QK_KPI.Target-rowData.Actual>0 ? 'old-car' : null">
                 <p-cellEditor>
                     <ng-template pTemplate="input">
                         <input pInputText type="text" [(ngModel)]="rowData.Actual">

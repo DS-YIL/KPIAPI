@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Service } from '../Service/Service';
-import { KpiGraphicalModel } from './GraphicalYearlyKPI.model';
+import { KpiGraphicalModel ,DeptNameModel} from './GraphicalYearlyKPI.model';
 import { map } from 'rxjs/operators';
 
 
@@ -19,7 +19,9 @@ export class GraphicalKPIService {
     return this.http.get<KpiGraphicalModel[]>(this.url + 'KPI/getAllkpi');
   }
 
-  
+  getDeptName(): Observable<DeptNameModel[]> {
+    return this.http.get<DeptNameModel[]>(this.url + 'KPI/getDeptName');
+  }
 
  
 }

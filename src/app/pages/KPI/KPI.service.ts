@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Service } from '../Service/Service';
-import { KpiModel,TopKpiModel ,InsertTopKpiModel} from './KPI.model';
+import { KpiModel,TopKpiModel ,InsertTopKpiModel,DeptNameModel} from './KPI.model';
 import { map } from 'rxjs/operators';
 
 
@@ -21,6 +21,10 @@ export class KPIService {
 
   getAllTopKpi(): Observable<TopKpiModel[]> {
     return this.http.get<TopKpiModel[]>(this.url + 'KPI/getTopkpi');
+  }
+
+  getDeptName(): Observable<DeptNameModel[]> {
+    return this.http.get<DeptNameModel[]>(this.url + 'KPI/getDeptName');
   }
 
   createTopKPIYearly(insertTopKpiModel: InsertTopKpiModel): Observable<any> {
