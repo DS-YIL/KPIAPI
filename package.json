@@ -37,7 +37,7 @@
     "font-awesome": "^4.7.0",
     "intl": "1.2.5",
     "ionicons": "2.0.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "mdn-polyfills": "^5.20.0",
     "nebular-icons": "1.1.0",
     "ng2-charts": "^2.3.0",
