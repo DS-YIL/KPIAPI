@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Service } from '../Service/Service';
-import { KpiModel,TopKpiModel ,InsertTopKpiModel,DeptNameModel} from './KPI.model';
+import { KpiModel,TopKpiModel ,InsertTopKpiModel,DeptNameModel, kpiMaster} from './KPI.model';
 import { map } from 'rxjs/operators';
 
 
@@ -16,19 +16,32 @@ export class KPIService {
   public httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
 
   getAllKpi(): Observable<KpiModel[]> {
-    return this.http.get<KpiModel[]>(this.url + 'KPI/getAllkpi');
+    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' ,'Timeout' : '120000'}) };
+    return this.http.get<KpiModel[]>(this.url + 'KPI/getAllkpi',httpOptions);
   }
 
   getAllTopKpi(): Observable<TopKpiModel[]> {
     return this.http.get<TopKpiModel[]>(this.url + 'KPI/getTopkpi');
   }
 
+  getmgtkpi():Observable<TopKpiModel[]> {
+    return this.http.get<TopKpiModel[]>(this.url + 'KPI/getmgntkpi');
+  }
+
   getDeptName(): Observable<DeptNameModel[]> {
     return this.http.get<DeptNameModel[]>(this.url + 'KPI/getDeptName');
   }
+  submitmgtkpi(mgtkpi:TopKpiModel[]): Observable<any> {
+    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' ,'Timeout' : '120000'}) };
+    return this.http.post<any>(this.url + 'KPI/submitmgtkpi', mgtkpi, httpOptions);
+  }
+  resetkpi(): Observable<any> {
+    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' ,'Timeout' : '120000'}) };
+    return this.http.post<any>(this.url + 'KPI/resetkpi', httpOptions);
+  }
 
   createTopKPIYearly(insertTopKpiModel: InsertTopKpiModel): Observable<any> {
-    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' ,'Timeout' : '120000'}) };
     return this.http.post<any>(this.url + 'KPI/AddCheckedKPI', insertTopKpiModel, httpOptions);
   }
 
@@ -37,5 +50,16 @@ export class KPIService {
   }
 
 
+  createMontlyKpi(addMonthlyKpiModel: kpiMaster[]): Observable<any> {
+    debugger;
+    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+    return this.http.post<any>(this.url + 'KPI/AddMonthlyKPI/', addMonthlyKpiModel, httpOptions);
+  }
+
+  AddMonthlyKPIAdmin(addMonthlyKpiModel: KpiModel[]): Observable<any> {
+    debugger;
+    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json','Timeout' : '120000' }) };
+    return this.http.post<any>(this.url + 'KPI/AddMonthlyKPIAdmin/', addMonthlyKpiModel, httpOptions);
+  }
   
 }

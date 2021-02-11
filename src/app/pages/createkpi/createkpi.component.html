@@ -1,0 +1,233 @@
+<!-- <div class="ui-g-12">
+  <p-card header="" [style]="{width: '238px','height':'60px'}" styleClass="ui-card-shadow">
+    <i class="fa fa-bookmark" style="font-size: 25px"></i><label style="font-size: 25px; color: rgb(96, 123, 212);"> &nbsp;&nbsp;KPI List</label>&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" pTooltip="Create KPI" style="border-radius: 10em!important;background-color: white; border-color:  rgb(96, 123, 212);" rounded="true" size="lg" class="my-0" (click)="addNewKPI()"> <i class="fa fa-user-plus" style="font-size: 25px;color: green;"></i></button>
+  </p-card>
+</div> -->
+<div  style="padding-top:0px;padding-left:0px !important;padding-right: 0px;">
+  <div class="row " style="margin-top:10px">
+    <div class="col-lg-12 col-md-12 col-sm-12 kpili" style="text-align: center;">
+      <p-table [value]="kpiDeptList" #dt [style]="{'width':'1700px !important','margin':'0px auto'}" [responsive]="true" [scrollable]="true" scrollHeight="42vh">
+        <ng-template pTemplate="caption">
+            <div class="ui-helper-clearfix" >
+              <div class="card-header" style="width:285px;height:34px;margin-left:5px;padding-top:0px">
+                <span>
+                  <button type="button" pButton icon="pi pi-file-excel" iconPos="left" label="EXCEL" (click)="exportExcel()" style="margin-right: 0.5em;" class="ui-button-success"></button>  
+                &nbsp; &nbsp;
+                <i class="fa fa-bookmark" style="font-size: 15px"></i><label style="font-size: 15px; color: rgb(96, 123, 212);"> &nbsp;&nbsp;KPI List</label>&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" pTooltip="Create KPI" style="border-radius: 0em!important;background-color: white; border-color:  rgb(96, 123, 212);" rounded="true" size="lg" class="my-0" (click)="addNewKPI()"> <i class="fa fa-user-plus" style="font-size: 15px;color: green;"></i></button>
+                
+                </span>
+              </div>
+            </div>
+           
+          
+         
+      </ng-template>
+        <!-- <ng-template pTemplate="caption" [style]>
+          KPI List -->
+          <!-- <button type="button" icon="fa fa-plus" pButton aria-hidden="true" pTooltip="Add New KPI" (click)="addNewKPI()" style="float: right;
+    height: 26px;"></button> -->
+        <!-- </ng-template> -->
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="sno" style="width: 70px;">Sl No.</th>
+            <th pSortableColumn="cwqpno" style="width: 130px;">CWQP No.
+            </th>
+            <th pSortableColumn="QualityIndices" style="width: 150px;">Quality Indices</th>
+            <th pSortableColumn="QTShortText" style="width: 150px;">QI(Short Text)</th>
+            <th pSortableColumn="measurement" style="width: 150px;">Measurememt</th>
+            <th pSortableColumn="Criteria" style="width: 200px;">Criteria(INR)</th>
+            <th pSortableColumn="Purpose" style="width: 200px;">Purpose</th>
+            <th pSortableColumn="target" style="width: 110px;">Target</th>
+            <th pSortableColumn="unitOfMeasurement" style="width: 150px;">Unit of Measurement</th>
+            <!-- <th pSortableColumn="actualTarget" style="width: 110px;">Actual Target</th> -->
+            <th pSortableColumn="edit" style="width: 110px;">Delete</th>
+          </tr>
+          <tr>
+            <th style="color: black;width: 70px;"></th>
+            <th>
+                <input pInputText type="text" style="color: black;width: 100px;" (input)="dt.filter($event.target.value, 'CWQPNo', 'contains')" placeholder="CWQPNo" class="ui-column-filter">
+            </th>
+            <th style="width: 150px;">
+                <input pInputText type="text" style="color: black;width: 130px;" (input)="dt.filter($event.target.value, 'QualityIndices', 'contains')" placeholder="Quality Indices" class="ui-column-filter">
+            </th>
+            <th style="width: 150px;">
+              <input pInputText type="text" style="color: black;width: 130px;" (input)="dt.filter($event.target.value, 'QIShortText', 'contains')" placeholder="QI Short Text" class="ui-column-filter">
+          </th>
+            <th>
+                <input pInputText type="text" style="color: black;width: 130px;" (input)="dt.filter($event.target.value, 'Measurment', 'contains')" placeholder="Measurment" class="ui-column-filter">
+            </th>
+           
+            <th>
+                    <input pInputText type="text" style="color: black;width: 150px;" (input)="dt.filter($event.target.value, 'Criteria', 'contains')" placeholder="Criteria" class="ui-column-filter">
+                </th>
+                <th>
+                  <input pInputText type="text" style="color: black;width: 150px;" (input)="dt.filter($event.target.value, 'Purpose', 'contains')" placeholder="Purpose" class="ui-column-filter">
+              </th>
+              <th>
+                  <input pInputText type="text" style="color: black;width: 90px;" (input)="dt.filter($event.target.value, 'Target', 'contains')" placeholder="Target" class="ui-column-filter">
+              </th>
+              <th>
+                  <input pInputText type="text" style="color: black;width: 90px;" (input)="dt.filter($event.target.value, 'unitOfMeasurement', 'contains')" placeholder="Unit of measurement" class="ui-column-filter">
+              </th>
+             
+              <!-- <th>
+                      <input pInputText type="text" style="color: black;width: 90px;" (input)="dt.filter($event.target.value, 'actualTarget', 'contains')" placeholder="Actual Target" class="ui-column-filter">
+                  </th> -->
+            <th style="width: 110px;"></th>
+        </tr>  
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+          <tr>
+            <td  style="text-align:center;width: 70px;"> {{ri+1}} </td>
+           
+            <td  style="text-align:right;width: 130px;">
+              <input type="text" class="form-control" [(ngModel)]="rowData.CWQPNo">
+              <!-- {{rowData.CWQPNo}} -->
+             </td>
+            <td  style="text-align:right;width: 150px;">
+              <textarea type="text" id="form7" class="md-textarea md-textarea-auto form-control" mdbInput [(ngModel)]="rowData.QualityIndices"></textarea>
+              <!-- <input type="text" class="form-control" [(ngModel)]="rowData.QualityIndices"> -->
+              <!-- {{rowData.QualityIndices}} -->
+            </td>
+            <td  style="text-align:right;width: 150px;">
+              <!-- <textarea type="text" id="form7" class="md-textarea md-textarea-auto form-control" mdbInput [(ngModel)]="rowData.QualityIndices"></textarea> -->
+              <input type="text" class="form-control" [(ngModel)]="rowData.QIShortText">
+              <!-- {{rowData.QualityIndices}} -->
+            </td>
+            <td  style="text-align:right;width: 150px;">
+              <textarea type="text" id="form7" class="md-textarea md-textarea-auto form-control" mdbInput [(ngModel)]="rowData.Measurment"></textarea>
+              <!-- <input type="text" class="form-control" [(ngModel)]="rowData.Measurment"> -->
+              <!-- {{rowData.Measurment}} -->
+
+            </td>
+            <td  style="text-align:right;width: 200px;">
+              <textarea type="text" id="form7" class="md-textarea md-textarea-auto form-control" mdbInput [(ngModel)]="rowData.Criteria"></textarea>
+              <!-- <input type="text" class="form-control" [(ngModel)]="rowData.Criteria"> -->
+              <!-- {{rowData.Criteria}} -->
+
+            </td>
+            <td  style="text-align:right;width: 200px;">
+              <textarea type="text" id="form7" class="md-textarea md-textarea-auto form-control" mdbInput [(ngModel)]="rowData.Purpose"></textarea>
+              <!-- <input type="text" class="form-control" [(ngModel)]="rowData.Purpose"> -->
+              <!-- {{rowData.Purpose}} -->
+             </td>
+            <td  style="text-align:right;width: 110px;">
+              <input type="text" class="form-control" [(ngModel)]="rowData.Target">
+      <!-- {{rowData.Target}} -->
+            </td>
+            <td  style="text-align:right;width: 150px;">
+              <input type="text" class="form-control" [(ngModel)]="rowData.unitOfMeasurement">
+              <!-- {{rowData.unitOfMeasurement}} -->
+
+            </td>
+            <!-- <td  style="text-align:right;width: 60px;">
+              <input type="text" class="form-control" [(ngModel)]="rowData.actualTarget">
+             
+
+            </td> -->
+            <td style="text-align:center;width: 110px;">
+               <!-- <button pButton type="button" icon="fa fa-edit" class="ui-button-info" style="margin-left: 1px;" (click)="EditKpi(rowData)"></button> -->
+               <button pButton type="button" icon="fa fa-trash" class="ui-button-info" style="margin-left: 1px;" (click)="DeleteKpi(rowData,ri)"></button>
+              </td>
+        </ng-template>
+      </p-table>
+     
+    </div>
+  </div>
+</div>
+
+  <div style="text-align: right">
+    <button type="button" *ngIf="showSubmitkpi" pButton icon="fa fa-check" label="Submit" (click)="SubmitKpi()"
+      ></button>
+  </div>
+<!-- 
+  <p-dialog header="Add New KPI" (onHide)="ClearData1()" [positionTop]="30" [(visible)]="addKPIDialogue" [contentStyle]="{'overflow':'visible'}" [style]="{width: '40vw','text-align' : 'center'}" [baseZIndex]="10000">
+    <div class="row">
+      <div class="col-lg-6 col-md-6">
+          <div class="form-group">
+
+              <label style="color: brown;">CQHSE No.</label>
+                      <div style="width:100%;margin-bottom:10px">
+                          <input type="text"  style="border-color: #417690;" [(ngModel)]="newkpidept.CWQPNo" class="form-control" autofocus id="CWQPNo"> 
+                      </div>
+          </div>
+      </div>
+      <div class="col-lg-6 col-md-6">
+          <div class="form-group">
+
+              <label style="color: brown;">Quality Indices</label>
+                      <div style="width:100%;margin-bottom:10px">
+                          <input type="text"  style="border-color: #417690;" [(ngModel)]="newkpidept.QualityIndices" class="form-control" autofocus id="QualityIndices"> 
+                      </div>
+          </div>
+      </div>
+
+  </div>
+  <div class="row">
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+
+            <label style="color: brown;">Measurememt</label>
+                    <div style="width:100%;margin-bottom:10px">
+                        <input type="text"  style="border-color: #417690;" [(ngModel)]="newkpidept.Measurment" class="form-control" autofocus id="Measurment"> 
+                    </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <div class="form-group">
+
+            <label style="color: brown;">Criteria</label>
+                    <div style="width:100%;margin-bottom:10px">
+                        <input type="text"  style="border-color: #417690;" [(ngModel)]="newkpidept.Criteria" class="form-control" autofocus id="Criteria"> 
+                    </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+  <div class="col-lg-6 col-md-6">
+      <div class="form-group">
+
+          <label style="color: brown;">Purpose</label>
+                  <div style="width:100%;margin-bottom:10px">
+                      <input type="text"  style="border-color: #417690;" [(ngModel)]="newkpidept.Purpose" class="form-control" autofocus id="Purpose"> 
+                  </div>
+      </div>
+  </div>
+  <div class="col-lg-6 col-md-6">
+      <div class="form-group">
+
+          <label style="color: brown;">Target</label>
+                  <div style="width:100%;margin-bottom:10px">
+                      <input type="text"  style="border-color: #417690;" [(ngModel)]="newkpidept.Target" class="form-control" autofocus id="Target"> 
+                  </div>
+      </div>
+  </div>
+
+</div>
+<div class="row">
+  <div class="col-lg-6 col-md-6">
+      <div class="form-group">
+
+          <label style="color: brown;">Unit of Measurememt</label>
+                  <div style="width:100%;margin-bottom:10px">
+                      <input type="text"  style="border-color: #417690;" [(ngModel)]="newkpidept.unitOfMeasurement" class="form-control" autofocus id="unitOfMeasurement"> 
+                  </div>
+      </div>
+  </div>
+  <div class="col-lg-6 col-md-6">
+      <div class="form-group">
+
+          <label style="color: brown;">Actual Target</label>
+                  <div style="width:100%;margin-bottom:10px">
+                      <input type="text"  style="border-color: #417690;" [(ngModel)]="newkpidept.actualTarget" class="form-control" autofocus id="actualTarget"> 
+                  </div>
+      </div>
+  </div>
+
+</div>
+    <p-footer>
+        <button class="btn btn-success" (click)="CreateKpi()">Create KPI</button>
+        <button class="btn btn-danger" (click)="addKPIDialogue=false">Cancel</button>
+    </p-footer> 
+</p-dialog> -->

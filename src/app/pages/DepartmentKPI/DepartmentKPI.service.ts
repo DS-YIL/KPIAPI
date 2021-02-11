@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { Service } from '../Service/Service';
 import { AllKpiModel,UnsuccesKpiModel,AddMonthlyKpiModel, QKUserModel } from './DepartmentKPI.model';
 import { map } from 'rxjs/operators';
+import { kpiMaster } from '../KPI/KPI.model';
 
 
 @Injectable({
@@ -22,7 +23,9 @@ export class DepartmentKPIService {
     return this.http.get<AllKpiModel[]>(this.url + 'KPI/getKpiByDeptId' + '?deptId=' + deptId);
   }
 
- 
+  getAllkpiByEmployeeId(empid: any): Observable<any> {
+    return this.http.get<any>(this.url + 'KPI/getAllkpiByEmployeeId' + '?empid=' + empid);
+  }
   getUnsucessfullKpi(kpiId: any): Observable<any> {
     return this.http.get<any>(this.url + 'KPI/getUnsucessfullKpiById' + '?kpiId=' + kpiId);
   }
@@ -30,7 +33,7 @@ export class DepartmentKPIService {
     return this.http.get<QKUserModel[]>(this.url + 'KPI/getQKUserByEmpId' + '?empNo=' + empNo);
   }
   
-  createMontlyKpi(addMonthlyKpiModel: AllKpiModel[]): Observable<any> {
+  createMontlyKpi(addMonthlyKpiModel: kpiMaster[]): Observable<any> {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
     return this.http.post<any>(this.url + 'KPI/AddMonthlyKPI/', addMonthlyKpiModel, httpOptions);
   }

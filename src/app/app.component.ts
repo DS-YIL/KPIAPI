@@ -32,6 +32,9 @@ export class AppComponent implements OnInit {
   onContecxtItemSelection(title){
 if(title =="Logout"){
   this._usermanage.logout();
+  //localStorage.removeItem('EmployeeRole');
+    //this.currentUserSubject.next(null);
+   // localStorage.removeItem('UserDetail');
   this.router.navigate(['/KPI/Login']);
 }
   }

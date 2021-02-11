@@ -1,68 +1,488 @@
-
-
-<div class="container-fluid">
+<div >
   <div class="row" style="margin-top: -15px; margin-bottom: -2px;" *ngIf="showDepartmentDropDown">
-    <div  class="col-lg-4 col-md-4 col-sm-4 form-group">
+    <div class="col-lg-4 col-md-4 col-sm-4 form-group">
       <label for="DivisionName" class="form-label">Department Name :</label>
-      <select  placeholder="Dipartment"  id="dipartment" name="Dipartment"  class="form-control" (change)="onSelectDpt($event)">
-           <option value="0">Select Department</option> 
-          <option *ngFor="let data of QKUserList" value={{data.DeptId}}>{{data.OrgDepartment.OrgDepartmentName}} </option> 
-        </select>            
-    </div>  
+      <select placeholder="Dipartment" id="dipartment" name="Dipartment" class="form-control"
+        (change)="onSelectDpt($event)">
+        <option value="0">Select Department For Form Edit</option>
+        <option *ngFor="let data of QKUserList" value={{data.DeptId}}>{{data.OrgDepartment.OrgDepartmentName}} </option>
+      </select>
+    </div>
   </div>
+  <div *ngIf="showEditableKPI">
     <nb-card>
       <nb-card-body>
         <div class="row">
           <div style="margin-bottom: 2px;" class="col-md-1">
-            <button type="button" class="btn btn-primary"  (click)="editKPI()"><i class="fa fa-pencil"></i> </button> 
+            <button type="button" class="btn btn-primary" (click)="editKPI()"><i class="fa fa-pencil"></i> </button>
           </div>
           <div style="text-align: center;" class="col-md-11">
-            <h6 > KPI Montly Entry Form</h6> 
+            <h6> Department QI Form</h6>
           </div>
-          
-          
         </div>
-        
-        <p-table [columns]="cols" [value]="dataList"  dataKey="ID" 
-         [responsive]="true" [resizableColumns]="true" [autoLayout]="true" >
-         <ng-template pTemplate="header" let-columns>
-           <colgroup>
-          <col *ngFor="let col of columns"  style="width: 200px;">
-          </colgroup>
-         </ng-template>
+        <p-table [columns]="actualCols" [value]="dataList" dataKey="ID" [responsive]="true" [resizableColumns]="true"
+          [autoLayout]="true">
           <ng-template pTemplate="header" let-columns>
-              <tr>                              
-                  <th *ngFor="let col of columns"  style="background-color: #007ad9;font-size:14px;color: #ffffff;">
-                      {{col.header}}
-                  </th>
-              </tr>
+            <colgroup>
+              <col *ngFor="let col of columns" style="width: 200px;">
+            </colgroup>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" style="background-color: #007ad9;color: #ffffff;">
+                {{col.header}}
+              </th>
+            </tr>
           </ng-template>
           <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr>
-               
-                <td *ngFor="let col of columns" pEditableColumn [ngClass]="{'disable-td' : !col.editable}">
-                    <div *ngIf="!col.editable">
-                        {{rowData[col.field]}}
-                      </div>
-                    <p-cellEditor *ngIf="col.editable">
-                        <ng-template pTemplate="input">
-                            <input pInputText type="number" required [(ngModel)]="rowData.March">
-                        </ng-template>
-                        <ng-template pTemplate="output">
-                            {{rowData[col.field]}}
-                        </ng-template>
+              <td *ngFor="let col of columns" pEditableColumn [ngClass]="{'disable-td' : !col.editable}">
+                <div *ngIf="!col.editable">
+                  {{rowData[col.field]}}
+                </div>
+                <p-cellEditor *ngIf="col.editable">
+                  <ng-template pTemplate="input">
+                    <!-- <input pInputText type="number" required [(ngModel)]="rowData.Actual"> -->
+                    <input pInputText type="number"  [(ngModel)]="rowData[col.field]" required>
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{rowData[col.field]}}
+                  </ng-template>
                 </p-cellEditor>
-                </td>
+              </td>
             </tr>
-        </ng-template>
-      </p-table><br>
-      <div style="text-align: right">
-    <button type="button" pButton icon="fa fa-check" label="Submit" (click)="onSubmit()" *ngIf="showSubmitButton"></button>&nbsp;&nbsp;&nbsp;
-      </div>
+          </ng-template>
+        </p-table><br>
+        <div style="text-align: right">
+          <button type="button" pButton icon="fa fa-check" label="Submit" (click)="onSubmit()"
+            *ngIf="showSubmitButton"></button>&nbsp;&nbsp;&nbsp;
+        </div>
       </nb-card-body>
     </nb-card>
   </div>
-
+  <!-- <div *ngIf="showAllKpi">
+    <p-table #dt [value]="allDataList" dataKey="kpi"
+      [globalFilterFields]="['QualityIndices','Criteria','CWQPNo','Department','Measurment','Target','Actual']"
+      editMode="row" >
+      <ng-template pTemplate="caption">
+        <div class="row">
+          <div class="col-sm-4"></div>
+          <div class="col-sm-4" style="text-align: center;">
+            <h6> KPI Monthly Entry Form</h6>
+          </div>
+          <div class="col-sm-4" style="text-align: right">
+            <label style="float:right !important">Doc No. : {{docno}}</label>
+          </div>
+        </div>
+        
+        <div style="text-align: right">
+          <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+          <input type="text" pInputText size="25" placeholder="Global Filter"
+            (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+        </div>
+       
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width:7em;background-color: #007ad9;color: #ffffff;text-align: center;">Dept Name</th>
+          <th style="width:7em;background-color: #007ad9;color: #ffffff;">Sl No.</th>
+          <th style="width:7em;background-color: #007ad9;color: #ffffff;text-align: center">CWQP No.</th>
+          <th style="width:8em;background-color: #007ad9;color: #ffffff;text-align: center">Quality Indices</th>
+          <th style="width:12em;background-color: #007ad9;color: #ffffff;text-align: center">Criteria</th>
+          <th style="width:11em;background-color: #007ad9;color: #ffffff;text-align: center">Measurement</th>
+          <th style="width:12em;background-color: #007ad9;color: #ffffff;text-align: center">Purpose</th>
+          <th *ngIf="aprTarget" style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">Target</th>
+          <th style="width:8em;background-color: #007ad9;color: #ffffff;text-align: center">Unit of measurement</th>
+          <th style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center;width:90px">Apr</th>
+          <th *ngIf="mayTarget" style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+          <th style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center;width:90px">May</th>
+          <th *ngIf="junTarget" style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">NewTarget</th>
+          <th style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center;width:90px">Jun</th>
+          <th *ngIf="julyTarget" style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+          <th style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">Jul</th>
+          <th *ngIf="augTarget" style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+          <th style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">Aug</th>
+          <th *ngIf="sepTarget" style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+          <th style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">Sep</th>
+          <th *ngIf="octTarget" style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+          <th style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">Oct</th>
+          <th *ngIf="novTarget" style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+          <th style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">Nov</th>
+          <th *ngIf="decTarget" style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+          <th style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">Dec</th>
+          <th *ngIf="janTarget" style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+          <th style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">Jan</th>
+          <th *ngIf="febTarget" style="width:5em;background-color: #007ad9;color: #ffffff;">New Target</th>
+          <th style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">Feb</th>
+          <th *ngIf="marTarget" style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+          <th style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">Mar</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+        <tr>
+          
+          <td style="text-align: left">
+            {{rowData.Department}}
+          </td>
+          <td style="text-align: center">
+            {{ri+1}}
+          </td>
+          <td style="text-align: left">
+            {{rowData.CWQPNo}}
+          </td>
+          <td style="text-align: left">
+            {{rowData.QualityIndices}}
+          </td>
+          <td style="text-align: left">
+            {{rowData.Criteria}}
+          </td>
+          <td style="text-align: left">
+            {{rowData.Measurement}}
+          </td>
+          <td style="text-align: left">
+            {{rowData.Purpose}}
+          </td>
+          <td style="text-align: right">
+            {{rowData.aprTarget}}
+          </td>
+          <td style="text-align: left">
+            {{rowData.Unitofmeasurement}}
+          </td>
+          <td style="text-align: right;width:90px">
+            <input  pInputText type="number" class="form-control"  [(ngModel)]="rowData.aprilachieved" required>
+         
+          </td >
+          
+          <td *ngIf="mayTarget" style="width:5em;text-align: right">
+            {{rowData.mayTarget}}
+          </td>
+          <td style="text-align: right;width:90px">
+            <input  pInputText type="number" class="form-control"  [(ngModel)]="rowData.mayachieved" required>
+            
+          </td>
+          <td *ngIf="junTarget" style="width:5em;text-align: right">
+            {{rowData.junTarget}}
+          </td>
+          <td style="text-align: right;width:90px">
+           
+            <input  pInputText type="number" class="form-control"  [(ngModel)]="rowData.juneachieved" required>
+            
+          </td>
+          <td *ngIf="julyTarget" style="width:5em;text-align: right">
+            {{rowData.julyTarget}}
+          </td>
+          <td style="text-align: right">
+            
+            {{rowData.July}}
+          </td>
+          <td *ngIf="augTarget" style="width:5em;text-align: right">
+            {{rowData.augTarget}}
+          </td>
+          <td style="text-align: right">
+            {{rowData.August}}
+          </td>
+          <td *ngIf="sepTarget" style="width:5em;text-align: right">
+            {{rowData.sepTarget}}
+          </td>
+          <td style="text-align: right">
+            {{rowData.September}}
+          </td>
+          <td *ngIf="octTarget" style="width:5em;text-align: right">
+            {{rowData.octTarget}}
+          </td>
+          <td style="text-align: right">
+            {{rowData.October}}
+          </td>
+          <td *ngIf="novTarget" style="width:5em;text-align: right">
+            {{rowData.novTarget}}
+          </td>
+          <td style="text-align: right">
+            {{rowData.November}}
+          </td>
+          <td *ngIf="decTarget" style="width:5em;text-align: right">
+            {{rowData.decTarget}}
+          </td>
+          <td style="text-align: right">
+            {{rowData.December}}
+          </td>
+          <td *ngIf="janTarget" style="width:5em;text-align: right">
+            {{rowData.janTarget}}
+          </td>
+          <td style="text-align: right">
+            {{rowData.January}}
+          </td>
+          <td *ngIf="febTarget" style="width:5em;text-align: right">
+            {{rowData.febTarget}}
+          </td>
+          <td style="text-align: right">
+            {{rowData.February}}
+          </td>
+          <td *ngIf="marTarget" style="width:5em;text-align: right">
+            {{rowData.marTarget}}
+          </td>
+          <td style="text-align: right">
+            {{rowData.March}}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <div style="text-align: right">
+      <button type="button"  pButton icon="fa fa-check" label="Submit" (click)="onSubmit()"
+        ></button>&nbsp;&nbsp;&nbsp;
+    </div>
+  </div> -->
+ 
+  <div *ngIf="showAllKpi">
+    <p-table #dt [columns]="scrollableCols" [frozenColumns]="frozenCols" [value]="allDataList" [scrollable]="true" scrollHeight="380px"
+ frozenWidth="760px"  [globalFilterFields]="['QualityIndices','Criteria','CWQPNo','Department','Measurment','Target','Actual']">
+ <ng-template pTemplate="caption">
+  <div class="row">
+    <div class="col-sm-4">Department Name : {{deptname}}</div>
+    <div class="col-sm-4" style="text-align: center;">
+      <h6> Department QI Form</h6>
+    </div>
+    <div class="col-sm-4" style="text-align: right">
+      <label style="float:right !important">Doc No. : {{docno}}</label>
+    </div>
+  </div>
   
+  <div style="text-align: right">
+    <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+    <input type="text" pInputText size="25" placeholder="Global Filter"
+      (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+  </div>
+ 
+</ng-template> 
+ <ng-template pTemplate="frozencolgroup" let-columns>
+		<colgroup>
+			<!-- <col style="width:100px"> -->
+      <!-- <col style="width:90px"> -->
+      <col style="width:3em;">
+      <col style="text-align: left;width:6em;">
+     
+      <col >
+      <col >
+      <col style="text-align: left;">
+      <col >
+      <col style="text-align: left;width:5em;">
+      <col style="text-align: left;">
+		</colgroup>
+	</ng-template>
+	<ng-template pTemplate="colgroup" let-columns>
+    <colgroup>
+      <col style="width:100px">
+			<col *ngIf="mayTarget" style="width:100px">
+      <col style="width:100px">
+      <col *ngIf="junTarget" style="width:100px">
+			<col style="width:100px">
+      <col *ngIf="julyTarget" style="width:100px">
+			<col style="width:100px">
+      <col *ngIf="augTarget" style="width:100px">
+      <col style="width:100px">
+			<col *ngIf="sepTarget" style="width:100px">
+			<col style="width:100px">
+      <col *ngIf="octTarget" style="width:100px">
+      <col style="width:100px">
+      <col *ngIf="novTarget" style="width:100px">
+      <col style="width:100px">
+      <col *ngIf="decTarget" style="width:100px">
+      <col style="width:100px">
+      <col *ngIf="janTarget" style="width:100px">
+      <col style="width:100px">
+      <col *ngIf="febTarget" style="width:100px">
+      <col style="width:100px">
+      <col *ngIf="marTarget" style="width:100px">
+      <col style="width:100px">
+		</colgroup>
+	</ng-template>
+	<ng-template pTemplate="frozenheader" let-columns>
+		<tr>
+			<!-- <th>All</th> -->
+			<!-- <th *ngFor="let col of columns">
+				{{col.header}}
+      </th> -->
+      <!-- <th style="width:7em;background-color: #007ad9;color: #ffffff;text-align: center;">Dept Name</th> -->
+      <th style="width:3em;background-color: #007ad9;color: #ffffff;">Sl No.</th>
+      <th style="background-color: #007ad9;color: #ffffff;text-align: center;width:6em;">CWQP No.</th>
+      <th style="background-color: #007ad9;color: #ffffff;text-align: center">Quality Indices</th>
+      <th style="background-color: #007ad9;color: #ffffff;text-align: left">Measurement</th>
+      <th style="background-color: #007ad9;color: #ffffff;text-align: center">Criteria</th>
+      <th style="background-color: #007ad9;color: #ffffff;text-align: center">Purpose</th>
+      <th *ngIf="aprTarget" style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">Target</th>
+      <th style="background-color: #007ad9;color: #ffffff;text-align: center">Unit Of Measurement</th>
+		</tr>
+	</ng-template>
+	<ng-template pTemplate="header" let-columns>
+		<tr>
+			<!-- <th *ngFor="let col of columns">
+				{{col.header}}
+      </th> -->
+      <th style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center;width:90px">Apr</th>
+          <th *ngIf="mayTarget" style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+          <th style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center;width:90px">May</th>
+          <th *ngIf="junTarget" style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">NewTarget</th>
+          <th style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center;width:90px">Jun</th>
+          <th *ngIf="julyTarget" style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+          <th style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">Jul</th>
+          <th *ngIf="augTarget" style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+          <th style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">Aug</th>
+          <th *ngIf="sepTarget" style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+          <th style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">Sep</th>
+          <th *ngIf="octTarget" style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+          <th style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">Oct</th>
+          <th *ngIf="novTarget" style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+          <th style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">Nov</th>
+          <th *ngIf="decTarget" style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+          <th style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">Dec</th>
+          <th *ngIf="janTarget" style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+          <th style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">Jan</th>
+          <th *ngIf="febTarget" style="width:5em;background-color: #007ad9;color: #ffffff;">New Target</th>
+          <th style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">Feb</th>
+          <th *ngIf="marTarget" style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+          <th style="width:5em;background-color: #007ad9;color: #ffffff;text-align: center">Mar</th>
+        
+		</tr>
+	</ng-template>
+	<ng-template pTemplate="frozenbody" let-rowData let-columns="columns" let-ri="rowIndex">
+		<tr>
+			<!-- <td style="text-align: center">
+				<p-tableCheckbox [value]="rowData" [attr.disabled]="
+                    rowData.setupType === 'No Action' &&
+                    rowData.currentStatus === 'INACTIVE'
+                      ? 'disabled'
+                      : null
+                  "></p-tableCheckbox>
+			</td>
+			<td *ngFor="let col of columns">
+				{{ rowData[col.field] }}
+      </td> -->
+      <!-- <td style="text-align: left">
+        {{rowData.Department}}
+      </td> -->
+      <td style="text-align: center;">
+        {{ri+1}}
+      </td>
+      <td style="text-align: left;word-wrap: break-word">
+        {{rowData.CWQPNo}}
+      </td>
+     
+      
+      <td style="text-align: left;word-wrap: break-word">
+        {{rowData.QualityIndices}}
+      </td>
+      <td style="text-align: left;word-wrap: break-word">
+        {{rowData.Measurement}}
+      </td>
+      <td style="text-align: left;word-wrap: break-word">
+        {{rowData.Criteria}}
+      </td>
+      <td style="text-align: left;word-wrap: break-word">
+        {{rowData.Purpose}}
+      </td>
+      <td style="text-align: center">
+        {{rowData.aprTarget}}
+      </td>
+      <td style="text-align: left;word-wrap: break-word">
+        {{rowData.Unitofmeasurement}}
+      </td>
+		</tr>
+	</ng-template>
+	<ng-template pTemplate="body" let-rowData let-columns="columns">
+		<tr>
+			<!-- <td *ngFor="let col of columns">
+				{{rowData[col.field]}}
+      </td> -->
+      <td style="text-align: center;width:90px">
+        <input *ngIf="currentMonth=='April' && rowData.aprilachieved==null" [hidden]="hidetxtbox" pInputText type="number" class="form-control"  [(ngModel)]="rowData.aprilachieved" required>
+     <span *ngIf="currentMonth!='April' || rowData.aprilachieved!=null"> {{rowData.aprilachieved}}</span>
+      </td >
+      
+      <td *ngIf="mayTarget" style="width:5em;text-align: center">
+        {{rowData.mayTarget}}
+      </td>
+      <td style="text-align: center;width:90px">
+        <input *ngIf="currentMonth=='May' && rowData.mayachieved==null" [hidden]="hidetxtbox" pInputText type="number" class="form-control"  [(ngModel)]="rowData.mayachieved" required>
+        <span *ngIf="currentMonth!='May' || rowData.mayachieved!=null"> {{rowData.mayachieved}}</span>
+      </td>
+      <td *ngIf="junTarget" style="width:5em;text-align: center">
+        {{rowData.junTarget}}
+      </td>
+      <td style="text-align: center;width:90px">
+        <input *ngIf="currentMonth=='June' && rowData.juneachieved==null" [hidden]="hidetxtbox" pInputText type="number" class="form-control"  [(ngModel)]="rowData.juneachieved" required>
+        <span *ngIf="currentMonth!='June' || rowData.juneachieved!=null"> {{rowData.juneachieved}}</span>
+        
+      </td>
+      <td *ngIf="julyTarget" style="width:5em;text-align: center">
+        {{rowData.julyTarget}}
+      </td>
+      <td style="text-align: center">
+        <input *ngIf="currentMonth=='July' && rowData.julyachieved==null" [hidden]="hidetxtbox" pInputText type="number" class="form-control"  [(ngModel)]="rowData.julyachieved" required>
+     <span *ngIf="currentMonth!='July' || rowData.julyachieved!=null"> {{rowData.julyachieved}}</span>
+      </td>
+      <td *ngIf="augTarget" style="width:5em;text-align: center">
+        {{rowData.augTarget}}
+      </td>
+      <td style="text-align: center">
+        <input *ngIf="currentMonth=='August' && rowData.augustachieved==null" [hidden]="hidetxtbox" pInputText type="number" class="form-control"  [(ngModel)]="rowData.augustachieved" required>
+        <span *ngIf="currentMonth!='August' || rowData.augustachieved!=null"> {{rowData.augustachieved}}</span>
+      </td>
+      <td *ngIf="sepTarget" style="width:5em;text-align: center">
+        {{rowData.sepTarget}}
+      </td>
+      <td style="text-align: center">
+        <input *ngIf="currentMonth=='September' && rowData.septemberachieved==null" [hidden]="hidetxtbox" pInputText type="number" class="form-control"  [(ngModel)]="rowData.septemberachieved" required>
+        <span *ngIf="currentMonth!='September' || rowData.septemberachieved!=null"> {{rowData.septemberachieved}}</span>
+      </td>
+      <td *ngIf="octTarget" style="width:5em;text-align: center">
+        {{rowData.octTarget}}
+      </td>
+      <td style="text-align: center">
+        <input *ngIf="currentMonth=='October' && rowData.octoberachieved==null" [hidden]="hidetxtbox" pInputText type="number" class="form-control"  [(ngModel)]="rowData.octoberachieved" required>
+        <span *ngIf="currentMonth!='October' || rowData.octoberachieved!=null"> {{rowData.octoberachieved}}</span>
+      </td>
+      <td *ngIf="novTarget" style="width:5em;text-align: center">
+        {{rowData.novTarget}}
+      </td>
+      <td style="text-align: center">
+        <input *ngIf="currentMonth=='November' && rowData.novemberachieved==null" [hidden]="hidetxtbox" pInputText type="number" class="form-control"  [(ngModel)]="rowData.novemberachieved" required>
+        <span *ngIf="currentMonth!='November' || rowData.novemberachieved!=null"> {{rowData.novemberachieved}}</span>
+      </td>
+      <td *ngIf="decTarget" style="width:5em;text-align: center">
+        {{rowData.decTarget}}
+      </td>
+      <td style="text-align: center">
+        <input *ngIf="currentMonth=='December' && rowData.decemberachieved==null" [hidden]="hidetxtbox" pInputText type="number" class="form-control"  [(ngModel)]="rowData.decemberachieved" required>
+        <span *ngIf="currentMonth!='December' || rowData.decemberachieved!=null"> {{rowData.decemberachieved}}</span>
+      </td>
+      <td *ngIf="janTarget" style="width:5em;text-align: center">
+        {{rowData.janTarget}}
+      </td>
+      <td style="text-align: center">
+        <input *ngIf="currentMonth=='January' && rowData.januaryachieved==null" [hidden]="hidetxtbox" pInputText type="number" class="form-control"  [(ngModel)]="rowData.januaryachieved" required>
+     <span *ngIf="currentMonth!='January' || rowData.januaryachieved!=null"> {{rowData.januaryachieved}}</span>
+      </td>
+      <td *ngIf="febTarget" style="width:5em;text-align: center">
+        {{rowData.febTarget}}
+      </td>
+      <td style="text-align: center">
+        <input *ngIf="currentMonth=='February' && rowData.februaryachieved==null" [hidden]="hidetxtbox" pInputText type="number" class="form-control"  [(ngModel)]="rowData.februaryachieved" required>
+     <span *ngIf="currentMonth!='February' || rowData.februaryachieved!=null"> {{rowData.februaryachieved}}</span>
+      </td>
+      <td *ngIf="marTarget" style="width:5em;text-align: center">
+        {{rowData.marTarget}}
+      </td>
+      <td style="text-align: center">
+        <input *ngIf="currentMonth=='March' && rowData.marchachieved==null" [hidden]="hidetxtbox" pInputText type="number" class="form-control"  [(ngModel)]="rowData.marchachieved" required>
+     <span *ngIf="currentMonth!='March' || rowData.marchachieved!=null"> {{rowData.marchachieved}}</span>
+      </td>
+		</tr>
+	</ng-template>
+</p-table>
+<br/>
+<div style="text-align: right" *ngIf="showSubmitButton">
+  <button type="button"  pButton icon="fa fa-check" label="Submit" (click)="onSubmit()"
+    ></button>
+</div>
+  </div>
 
-  
+</div>

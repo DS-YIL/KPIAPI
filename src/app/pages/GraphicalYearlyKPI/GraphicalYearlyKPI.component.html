@@ -2,27 +2,36 @@
     <div class="panel-body">
         <div class="row">
         <div  class="col-lg-4 col-md-4 col-sm-4 form-group">
-            <label for="DivisionName" class="form-label">Department Name :</label>
+            <label for="DivisionName" class="form-label">Department Name </label>
             <select  placeholder="Dipartment"  id="dipartment" name="Dipartment" (change)="onSelectDpt($event)" class="form-control">
                  <option value="0">Select Department</option> 
+                 <option *ngIf="roleid==5 || roleid==4" value="KPI Management">Management QI</option>
                 <option *ngFor="let data of deptDropDownList">{{data.DepName}} </option> 
               </select>            
           </div>        
           <div  class="col-lg-3 col-md-3 col-sm-3 form-group">
-            <label for="Year" class="form-label">FY :</label>
-            <select  placeholder="Year"  id="year" name="Year" (change)="onSelectYear($event)" class="form-control">
+            <label for="Year" class="form-label">FY </label>
+            <kendo-datepicker class="form-control" 
+            [min]="min"
+            [max]="max"
+            [bottomView]="'decade'"
+            [topView]="'decade'"
+            [format]="'yyyy'"
+            [(value)]="valuedate"
+  ></kendo-datepicker>
+            <!-- <select  placeholder="Year"  id="year" name="Year" (change)="onSelectYear($event)" class="form-control">
               <option value="0">Select Year</option>  
-              <option value="2020"> 2020</option>
-                <option value="2019"> 2019</option>                                       
-              </select>          
+              <option value="2020"> FY20</option>
+                <option value="2021"> FY21</option>                                       
+              </select>           -->
           </div>
           
           <div class="col-lg-2 col-md-2 col-sm-2 form-group">
             <!-- <button style="margin-top: 25px;" type="submit" (click) = "filterKPI()"value="true" class="btn btn-primary">Submit</button> -->
-            <button style="margin-top: 25px;" type="submit" (click) = "Submit()"value="true" class="btn btn-primary">Submit</button>
+            <button style="margin-top: 25px;" type="submit" (click) = "filterKPI()"value="true" class="btn btn-primary">Submit</button>
           </div>
           <div class="col-lg-3 col-md-3 col-sm-3 form-group">
-            <button style="margin-top: 25px;" [routerLink]="['/KPI/YearlyKPI']" class="btn btn-primary" type="button" >GoTo TabularKPI </button>    
+            <button style="margin-top: 25px;" [routerLink]="['/KPI/YearlyKPI']" class="btn btn-primary" type="button" >Go To Tabular KPI </button>    
         </div>
         </div>
         <nb-card>
@@ -36,7 +45,8 @@
                     
             <div class="col-lg-12 col-md-12 col-sm-12"> 
               <span style="margin-left: 28px;">{{Data.KPIName}}</span> 
-              <span style="margin-left: 28px;">{{Data.QualityIndices}}</span>    
+              <span>{{lineChartList.indexOf(Data) + 1}}.</span>
+              <span style="margin-left: 28px;">{{Data.QIShortText}}</span>    
               <p-chart type="line" [options]="chartOptions"  [plugins]="barChartPlugins" [data]="Data.DataList" width="100%" height="350px" >            
               </p-chart>
               </div> 
@@ -51,4 +61,4 @@
 
 </div>
 </div>
-
+<!-- <p-chart type="line" [data]="lineChart"  width="100%" height="350px"></p-chart> -->

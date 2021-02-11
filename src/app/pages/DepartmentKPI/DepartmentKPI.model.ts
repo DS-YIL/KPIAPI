@@ -22,7 +22,7 @@ export class UnsuccesKpiModel {
    }
 
    export class AllKpiModel {
-    KpiId: any;
+    kpiId: any;
     KpiName:string;
     QualityIndices: string;
     Criteria: string;
@@ -34,11 +34,36 @@ export class UnsuccesKpiModel {
     RevNo: string;
     Purpose: string;
     Target: any;
+    aprilTarget:any;
+    mayTarget:any;
+    juneTarget:any;
+    julyTarget:any;
+    augTarget:any;
+    sepTarget:any;
+    octTarget:any;
+    novTarget:any;
+    decTarget:any;
+    janTarget:any;
+    febTarget:any;
+    marTarget:any;
     April: any;
     May: any;
+    June:any;
     July:any;
-    March:any;
     August:any;
+    September:any;
+    october:any;
+    November:any;
+    December:any;
+    March:any;
+    julyachieved:any;
+    augustachieved:any;
+    septemberachieved:any;
+    octoberachieved:any;
+    novemberachieved:any;
+    decemberachieved:any;
+    januaryachieved:any;
+    februaryachieved:any;
     Year:string;
     Month:string;
     Actual:string;
@@ -57,7 +82,7 @@ export class UnsuccesKpiModel {
    
 
    export class AddMonthlyKpiModel{
-       KPIId:any;
+       kpiId:any;
        Department:string;
        CWQPNo:string;
        QualityIndices:string;
@@ -105,11 +130,38 @@ export class kpiMaster{
     Purpose:string;
     ActualTarget:string;
     Unitofmeasurement:string;
+    UpdatedBy:any;
+    aprilTarget:any;
+    mayTarget:any;
+    juneTarget:any;
+    julyTarget:any;
+    augTarget:any;
+    sepTarget:any;
+    octTarget:any;
+    novTarget:any;
+    decTarget:any;
+    janTarget:any;
+    febTarget:any;
+    marTarget:any;
     Target:string;
     KpiName:string;
+    marchachieved:any;
+    aprilachieved:any;
+    mayachieved:any;
+    juneachieved:any;
+    julyachieved:any;
+    augustachieved:any;
+    septemberachieved:any;
+    octoberachieved:any;
+    novemberachieved:any;
+    decemberachieved:any;
+    januaryachieved:any;
+    februaryachieved:any;
+   
     DeptId:any; 
     EnteredBy:string;
     EnteredOn:any; 
     InUse:any;
+    user:any;
     //OrgDepartment:OrgDepartmentModel;    
 }

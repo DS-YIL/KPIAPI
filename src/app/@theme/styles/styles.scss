@@ -19,8 +19,21 @@
 @import './overrides';
 
 // install the framework and custom global styles
-@include nb-install() {
 
+@include nb-install() {
+  // ::-webkit-scrollbar {
+  //   width: nb-theme(20px) !important;
+  //   height: nb-theme(20px) !important;;
+  // }
+
+  // ::-webkit-scrollbar-thumb {
+  //   background: nb-theme(scrollbar-color) !important;
+  //   border-radius: nb-theme(100) / 2 !important;;
+  // }
+
+  // ::-webkit-scrollbar-track {
+  //   background: nb-theme(scrollbar-background-color);
+  // }
   // framework global styles
   @include nb-theme-global();
   @include nb-auth-global();
@@ -31,3 +44,9 @@
 
   @include nb-overrides();
 };
+
+
+
+
+
+

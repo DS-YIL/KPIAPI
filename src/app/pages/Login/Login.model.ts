@@ -8,6 +8,7 @@ export class DynamicSearchResult {
     searchCondition: string;
     query: string;
     sortBy: string;
+    requestFormId:number;
   }
   export class searchParams {
     tableName: string;

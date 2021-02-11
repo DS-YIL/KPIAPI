@@ -10,3 +10,28 @@ body .ui-table .ui-table-thead > tr > th{
     font-weight: normal; 
     background-color: #d1d3f7;
 }
+td {
+    padding: 0 70px;
+  }
+  th {
+    padding: 0 70px;
+  }
+  div {
+    width: 300px;
+    overflow-x: scroll;
+    margin-left: 50px;
+    overflow-y: scroll;
+    padding-bottom: 1px;
+  }
+
+  /* body .ui-table .ui-table-tbody > tr > td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 50px;
+}
+
+body .ui-table .ui-table-tbody > tr>td:hover {
+    overflow: auto;
+    text-overflow: initial;
+} */

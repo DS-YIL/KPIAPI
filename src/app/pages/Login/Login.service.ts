@@ -41,6 +41,7 @@ export class LoginService {
     return this.http.post<any>(this.url + 'KPI/ValidationLoginCredential/', search)
       .pipe(map(data => {
         if (data.EmployeeNo != null) {
+          debugger;
           //const object = Object.assign({}, ...data);
           localStorage.setItem('Employee', JSON.stringify(data));
           this.currentUserSubject.next(data);
@@ -57,9 +58,12 @@ export class LoginService {
 
   
   logout() {
-    //localStorage.removeItem('Employee');
+    localStorage.removeItem('EmployeeRole');
+    localStorage.removeItem('EmployeeDetails');
+    localStorage.removeItem('deptId');
     this.currentUserSubject.next(null);
-    //localStorage.removeItem('datalist');
+    localStorage.removeItem('UserDetail');
+    localStorage.removeItem('Employee');
     //window.location.reload();
   }
  

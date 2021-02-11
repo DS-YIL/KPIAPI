@@ -1,0 +1,48 @@
+<p-card header="" [style]="{'border-radius': '10px'}">
+    <div *ngIf="showreqstReason">
+        <h5 style="text-align:center;color:white;background-color: #007ad9;">Add/Delete/Edit QI Request Details</h5>
+        <div class="row " style="margin-top:20px;margin-left: 20px;">
+            <div class="col-lg-6 col-md-6 col-sm-6 form-inline">
+              <label  class="form-label"><b>Department Name: </b> </label>&nbsp;
+              <input [attr.disabled]=true style="height: 30px;" type="text" value={{deptName}}>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 form-inline">
+              <label class="form-label"><b>Employee Name: </b> </label>&nbsp;
+              <input [attr.disabled]=true style="height: 30px;" type="text" value={{employeeName}}>
+            </div>
+          </div>
+          <div class="row" style="margin-top:20px;margin-left: 20px;">
+            <div class="col-lg-6 col-md-6 col-sm-6 form-inline">
+                <label [attr.disabled]=true class="form-label"><b> Reason to Edit/Create QI: </b> </label>&nbsp;
+              </div>
+          </div>
+          <div class="row" style="margin-top:20px;margin-left: 20px;">
+            <div class="col-lg-12 col-md-12 col-sm-12 form-inline">
+            <textarea [(ngModel)]="reason" class="col-lg-12 col-md-12 col-sm-12 form-label"></textarea>  
+            </div>
+          </div>
+          <div *ngIf="displayReject" class="row" style="margin-top:20px;margin-left: 20px;">
+            <div class="col-lg-6 col-md-6 col-sm-6 form-inline">
+                <label [attr.disabled]=true class="form-label"><b> Reason to Reject KPI Request: </b> </label>&nbsp;
+              </div>
+          </div>
+          <div *ngIf="displayReject" class="row" style="margin-top:20px;margin-left: 20px;">
+            <div class="col-lg-12 col-md-12 col-sm-12 form-inline">
+            <textarea [(ngModel)]="rejectReason" class="col-lg-12 col-md-12 col-sm-12 form-label"></textarea>  
+            </div>
+          </div>
+          <div class="row" style="margin-top:20px;" >
+            <div class="col-lg-12 col-md-12 col-sm-12 text-center" style="text-align:center">
+                <button *ngIf="showApprove" class="btn btn-primary" type="button"  (click)="ApproveRequest()" mat-raised-button >Approve</button>
+                &nbsp;&nbsp;<button *ngIf="showReject" class="btn btn-primary" type="button"  (click)="RejectRequest()" mat-raised-button >Reject</button>
+                <button *ngIf="subRej" class="btn btn-primary" type="button"  (click)="onSubmit()" mat-raised-button >Submit</button>
+              </div>
+  
+          </div>
+    </div>
+    <div *ngIf="!showreqstReason">
+      <label style="color: red;">You are not Authorized to view this Page</label>
+    </div>
+    
+    </p-card>
+    

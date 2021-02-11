@@ -33,7 +33,21 @@ import {YearlyKPIComponent} from './YearlyKPI/YearlyKPI.component';
 import {GraphicalKPIComponent} from './GraphicalYearlyKPI/GraphicalYearlyKPI.component';
 import {DepartmentKPIComponent} from './DepartmentKPI/DepartmentKPI.component'
 import { ChartsModule } from 'ng2-charts';
-import { KpiApprovalComponent } from '../kpi-approval/kpi-approval.component';
+import { KpiApprovalComponent } from './kpi-approval/kpi-approval.component';
+import { CreatekpiComponent } from './createkpi/createkpi.component';
+import {CardModule} from 'primeng/card';
+import { KpieditrequestComponent } from './kpieditrequest/kpieditrequest.component';
+import { KpimodificationsapprovalComponent } from './kpimodificationsapproval/kpimodificationsapproval.component';
+import { PendingforapprovalsComponent } from './pendingforapprovals/pendingforapprovals.component';
+import { UpdatedkpiaprrovalformComponent } from './updatedkpiaprrovalform/updatedkpiaprrovalform.component';
+import { ApprovedmonthlykpisComponent } from './approvedmonthlykpis/approvedmonthlykpis.component';
+import { PendingkpiapprovalsComponent } from './pendingkpiapprovals/pendingkpiapprovals.component';
+import { MonthlykpistatusComponent } from './monthlykpistatus/monthlykpistatus.component';
+import { RequestedkpistatusComponent } from './requestedkpistatus/requestedkpistatus.component';
+import { IntlModule } from '@progress/kendo-angular-intl';
+import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
+import { UpdatedQIStatusComponent } from './updated-qistatus/updated-qistatus.component';
+import { UpdatedQIFormstatusComponent } from './updated-qiformstatus/updated-qiformstatus.component';
 
 
 
@@ -41,6 +55,7 @@ import { KpiApprovalComponent } from '../kpi-approval/kpi-approval.component';
   imports: [
     PagesRoutingModule,
     ThemeModule,
+    CardModule,
     NbMenuModule,
     DashboardModule,
     FormsModule ,
@@ -67,8 +82,9 @@ import { KpiApprovalComponent } from '../kpi-approval/kpi-approval.component';
     ChartModule,
     DropdownModule,
     NbCardModule,
-    ChartsModule
-   
+    ChartsModule,
+    IntlModule,
+    DateInputsModule 
 
   ],
   declarations: [
@@ -80,11 +96,23 @@ import { KpiApprovalComponent } from '../kpi-approval/kpi-approval.component';
     LoginComponent,
     ConfirmationDialogComponent,
     DepartmentKPIComponent,
-    KpiApprovalComponent
+    KpiApprovalComponent,
+    CreatekpiComponent,
+    KpieditrequestComponent,
+    KpimodificationsapprovalComponent,
+    PendingforapprovalsComponent,
+    UpdatedkpiaprrovalformComponent,
+    ApprovedmonthlykpisComponent,
+    PendingkpiapprovalsComponent,
+    MonthlykpistatusComponent,
+    RequestedkpistatusComponent,
+    UpdatedQIStatusComponent,
+    UpdatedQIFormstatusComponent
    
     
     
   ],
+  bootstrap:    [ KPIComponent ],
   providers:[MessageService, ConfirmationService],
   entryComponents:[ConfirmationDialogComponent]
 })

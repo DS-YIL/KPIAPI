@@ -28,6 +28,9 @@
               "src/assets"
             ],
             "styles": [
+              {
+                "input": "node_modules/@progress/kendo-theme-default/dist/all.css"
+              },
               "src/styles.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/typeface-exo/index.css",
@@ -45,7 +48,6 @@
               "node_modules/pace-js/pace.min.js",
               "node_modules/chart.js/dist/Chart.js",
               "node_modules/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.js"
-             
             ]
           },
           "configurations": {
@@ -68,12 +70,12 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "10mb",
+                  "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
+                  "maximumWarning": "10kb",
                   "maximumError": "10kb"
                 }
               ]
@@ -109,10 +111,12 @@
               "src/assets"
             ],
             "styles": [
+              {
+                "input": "node_modules/@progress/kendo-theme-default/dist/all.css"
+              },
               "src/styles.scss"
             ],
-            "scripts": [
-            ]
+            "scripts": []
           }
         },
         "lint": {
@@ -141,6 +145,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "SCMUI"
 }

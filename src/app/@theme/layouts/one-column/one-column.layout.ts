@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Employee } from 'src/app/pages/Login/Login.model';
 import { LoginService } from 'src/app/pages/Login/Login.service';
 // import { Employee } from 'src/app/Models/mpr';
@@ -25,13 +25,30 @@ import { LoginService } from 'src/app/pages/Login/Login.service';
     </nb-layout>
   `,
 })
-export class OneColumnLayoutComponent {
+export class OneColumnLayoutComponent implements OnInit {
 
   currentUser:Employee;
+  showmenu = false;
+  approverdetail:any;
   constructor(private _usermanage:LoginService){
-   
+  
     this._usermanage.currentUser.subscribe(x=> this.currentUser =x);
+    // if(!this.approverdetail==undefined && this.currentUser){
+      
+    //   this.showmenu=true;
+    // }
+    
     // console.log(this.currentUser);
+  }
+  ngOnInit() {
+    //this.approverdetail = localStorage.getItem('UserDetail');
+    //  if(!this.approverdetail && this.currentUser){
+      
+    //   this.showmenu=true;
+    // }
+  // if( this.currentUser){
+  //   this.showmenu=true;
+  // }
   }
   
 }

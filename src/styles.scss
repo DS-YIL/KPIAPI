@@ -85,6 +85,7 @@ hr {
   font-size: 1.5em !important;
   color: #00CED1;
 }
+
 /*::ng-deep .ui-datatable-scrollable-header-box {
   margin-right: 0 !important;
 }*/
@@ -471,3 +472,37 @@ fieldset.scheduler-border {
   white-space: pre-wrap;
   word-wrap: break-word
 }
+
+.nb-theme-default nb-sidebar .scrollable::-webkit-scrollbar {
+  width: 0.8rem !important;
+  height: 0.3125rem;
+}
+.nb-theme-default nb-sidebar .scrollable::-webkit-scrollbar-thumb {
+  background: #8f9bb387 !important;
+}
+
+.nb-theme-default nb-sidebar .main-container {
+  height: 100vh;
+  width: 20rem !important;
+}
+.nb-theme-default nb-sidebar.expanded {
+  width: 20rem !important;
+}
+.nb-theme-default nb-sidebar {
+  width: 20rem !important;
+}
+
+.nb-theme-default nb-sidebar.compacted {
+  width: 3.5rem !important;
+}
+
+.nb-theme-default nb-layout .scrollable-container::-webkit-scrollbar {
+  width: 0.8rem !important;
+  height: 6.0rem !important;
+}
+.nb-theme-default nb-layout .scrollable-container::-webkit-scrollbar-thumb {
+  background: #8f9bb387 !important;
+}
+
+
+//.ui-table-scrollable-body

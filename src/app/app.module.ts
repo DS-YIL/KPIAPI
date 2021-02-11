@@ -35,7 +35,10 @@ import { ThemeModule } from './@theme/theme.module';
 import { NbSidebarModule, NbMenuModule, NbDatepickerModule, NbDialogModule, NbWindowModule, NbToastrModule, NbChatModule } from '@nebular/theme';
 import { CoreModule } from './@core/core.module';
 import {ChartModule} from 'primeng/chart';
+import {CardModule} from 'primeng/card';
 import { DropdownModule } from 'primeng/dropdown';
+import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
+
 //import { LoginComponent } from './Login/Login.component';
 
 
@@ -90,7 +93,7 @@ import { DropdownModule } from 'primeng/dropdown';
     ConfirmDialogModule,
     MatExpansionModule,
     ChartModule,
-    
+    CardModule,
     ThemeModule.forRoot(),
 
     NbSidebarModule.forRoot(),
@@ -103,7 +106,8 @@ import { DropdownModule } from 'primeng/dropdown';
       messageGoogleMapKey: 'AIzaSyA_wNuCzia92MAmdLRzmqitRGvCF7wCZPY',
     }),
     CoreModule.forRoot(),
-    NbMenuModule.forRoot()
+    NbMenuModule.forRoot(),
+    DateInputsModule
   ],
   providers: [HttpClientModule, MessageService, ConfirmationService],
  // entryComponents: [ConfirmationDialogComponent,],

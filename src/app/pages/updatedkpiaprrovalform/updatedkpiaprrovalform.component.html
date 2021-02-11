@@ -1,0 +1,242 @@
+<div class="container-fluid">
+  
+    <!-- <div>
+      <label style="float:right !important">Doc No. : {{docno}}</label>
+    </div> -->
+    <p-table #dt [value]="deletedKPIModel" dataKey="kpi" 
+      [globalFilterFields]="['QualityIndices','Criteria','CWQPNo','Department','Measurment','Target','Actual']"
+      editMode="row"  [resizableColumns]="true" columnResizeMode="expand"
+      [responsive]="true" selectionMode="single">
+      <ng-template pTemplate="caption">
+        <div class="row">
+          <div class="col-sm-4">
+            <button type="button" icon="fa fa-arrow-left" pButton aria-hidden="true" pTooltip="Back" (click)="updatedqiststus()" style="float: left; height: 26px;"></button>
+     
+          </div>
+          <div class="col-sm-4" style="text-align: center;">
+            <h6> Deleted QI's</h6>
+          </div>
+          <div class="col-sm-4" style="text-align: right">
+            <label style="float:right !important">Doc No. : {{docno}}</label>
+          </div>
+        </div>
+        
+        <div style="text-align: right">
+          <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+          <input type="text" pInputText size="25" placeholder="Global Filter"
+            (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+        </div>
+       
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width:7em;background-color: #007ad9;color: #ffffff;text-align: center">Sl No.</th>
+            <th style="width:7em;background-color: #007ad9;color: #ffffff;text-align: center;">Dept Name</th>
+            <th style="width:7em;background-color: #007ad9;color: #ffffff;text-align: center">CWQP No.</th>
+            <th style="width:8em;background-color: #007ad9;color: #ffffff;text-align: center">Quality Indices</th>
+            <th style="width:10em;background-color: #007ad9;color: #ffffff;text-align: center">Criteria</th>
+            <th style="width:8em;background-color: #007ad9;color: #ffffff;text-align: center">Measurement</th>
+            <!-- <th style="width:8em;background-color: #007ad9;color: #ffffff;text-align: center">Target</th> -->
+            <th style="width:8em;background-color: #007ad9;color: #ffffff;text-align: center">Actual Target</th>
+            <th style="width:8em;background-color: #007ad9;color: #ffffff;text-align: center">Unit Of Measurement</th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+        <tr>
+          <td style="text-align: center">
+            {{ri+1}}
+          </td>
+            <td style="text-align: left">
+                {{rowData.DeptName}}
+              </td>
+              <td style="text-align: left">
+                {{rowData.CWQPNo}}
+              </td>
+              <td style="text-align: left">
+                {{rowData.QualityIndices}}
+              </td>
+              <td style="text-align: left">
+                {{rowData.Criteria}}
+              </td>
+              <td style="text-align: left">
+                {{rowData.Measurment}}
+              </td>
+              <!-- <td style="text-align: right">
+                {{rowData.Target}}
+              </td> -->
+              <td style="text-align: center">
+                {{rowData.ActualTarget}}
+              </td>
+              <td style="text-align: left">
+                
+              {{rowData.UOM}}
+              </td >
+
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <p-table #dt [value]="addkpiModel" dataKey="kpi" 
+    [globalFilterFields]="['QualityIndices','Criteria','CWQPNo','Department','Measurment','Target','Actual']"
+    editMode="row"  [resizableColumns]="true" columnResizeMode="expand"
+    [responsive]="true" selectionMode="single">
+    <ng-template pTemplate="caption">
+      <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4" style="text-align: center;">
+          <h6> Added QI's</h6>
+        </div>
+        <div class="col-sm-4" style="text-align: right">
+          <label style="float:right !important">Doc No. : {{docno}}</label>
+        </div>
+      </div>
+      
+      <div style="text-align: right">
+        <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+        <input type="text" pInputText size="25" placeholder="Global Filter"
+          (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+      </div>
+     
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width:7em;background-color: #007ad9;color: #ffffff;text-align: center">Sl No.</th>
+        <th style="width:7em;background-color: #007ad9;color: #ffffff;text-align: center;">Dept Name</th>
+  
+      <th style="width:7em;background-color: #007ad9;color: #ffffff;text-align: center">CWQP No.</th>
+      <th style="width:8em;background-color: #007ad9;color: #ffffff;text-align: center">Quality Indices</th>
+      <th style="width:10em;background-color: #007ad9;color: #ffffff;text-align: center">Criteria</th>
+      <th style="width:8em;background-color: #007ad9;color: #ffffff;text-align: center">Measurement</th>
+      <!-- <th style="width:8em;background-color: #007ad9;color: #ffffff;text-align: center">Target</th> -->
+      <th style="width:8em;background-color: #007ad9;color: #ffffff;text-align: center">Actual Target</th>
+      <th style="width:8em;background-color: #007ad9;color: #ffffff;text-align: center">Unit Of Measurement</th>
+    </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+      <tr>
+        <td style="text-align: center">
+          {{ri+1}}
+        </td>
+        <td style="text-align: left">
+            {{rowData.DeptName}}
+          </td>
+          
+          <td style="text-align: left">
+            {{rowData.CWQPNo}}
+          </td>
+          <td style="text-align: left">
+            {{rowData.QualityIndices}}
+          </td>
+          <td style="text-align: left">
+            {{rowData.Criteria}}
+          </td>
+          <td style="text-align: left">
+            {{rowData.Measurment}}
+          </td>
+          <!-- <td style="text-align: right">
+            {{rowData.Target}}
+          </td> -->
+          <td style="text-align: center">
+            {{rowData.ActualTarget}}
+          </td>
+          <td style="text-align: left">
+            
+          {{rowData.UOM}}
+          </td >
+          
+      </tr>
+    </ng-template>
+  </p-table>
+
+
+  <p-table #dt [value]="UpdatedkpiMaodel" dataKey="kpi" 
+  [globalFilterFields]="['QualityIndices','Criteria','CWQPNo','Department','Measurment','Target','Actual']"
+  editMode="row" [resizableColumns]="true" columnResizeMode="expand"
+  [responsive]="true" selectionMode="single">
+  <ng-template pTemplate="caption">
+    <div class="row">
+      <div class="col-sm-4"></div>
+      <div class="col-sm-4" style="text-align: center;">
+        <h6> Updated QI's </h6>
+      </div>
+      <div class="col-sm-4" style="text-align: right">
+        <label style="float:right !important">Doc No. : {{docno}}</label>
+      </div>
+    </div>
+    
+    <div style="text-align: right">
+      <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+      <input type="text" pInputText size="25" placeholder="Global Filter"
+        (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+    </div>
+   
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width:7em;background-color: #007ad9;color: #ffffff;text-align: center">Sl No.</th>
+      <th style="width:7em;background-color: #007ad9;color: #ffffff;text-align: center;">Dept Name</th>
+      
+      <th style="width:7em;background-color: #007ad9;color: #ffffff;text-align: center">CWQP No.</th>
+      <th style="width:8em;background-color: #007ad9;color: #ffffff;text-align: center">Quality Indices</th>
+      <th style="width:10em;background-color: #007ad9;color: #ffffff;text-align: center">Criteria</th>
+      <th style="width:8em;background-color: #007ad9;color: #ffffff;text-align: center">Measurement</th>
+      <!-- <th style="width:8em;background-color: #007ad9;color: #ffffff;text-align: center">Target</th> -->
+      <th style="width:8em;background-color: #007ad9;color: #ffffff;text-align: center">Actual Target</th>
+      <th style="width:8em;background-color: #007ad9;color: #ffffff;text-align: center">Unit Of Measurement</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+    <tr>
+      <!-- <td>
+        {{rowData.kpiId}}
+      </td> -->
+      <td style="text-align: center">
+        {{ri+1}}
+      </td>
+      <td style="text-align: left">
+        {{rowData.DeptName}}
+      </td>
+      
+      <td style="text-align: left">
+        {{rowData.CWQPNo}}
+      </td>
+      <td style="text-align: left">
+        {{rowData.QualityIndices}}
+      </td>
+      <td style="text-align: left">
+        {{rowData.Criteria}}
+      </td>
+      <td style="text-align: left">
+        {{rowData.Measurment}}
+      </td>
+      <!-- <td style="text-align: right">
+        {{rowData.Target}}
+      </td> -->
+      <td style="text-align: center">
+        {{rowData.ActualTarget}}
+      </td>
+      <td style="text-align: left">
+        
+      {{rowData.UOM}}
+      </td >
+      
+    </tr>
+  </ng-template>
+</p-table>
+
+
+    <div mat-cell *ngIf="isApproved">
+      <br/><br/>
+      <button class="btn btn-primary" (click)="Approve()" mat-raised-button >Approve</button>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <button class="btn btn-primary" (click)="Reject()" mat-raised-button >Reject</button>
+  </div>
+  <div >
+      <br/><br/>
+      <textarea *ngIf="isRejected" [rows]="5" [cols]="30" pInputTextarea autoResize="autoResize" placeholder="Reason for rejection" [(ngModel)]="reason"></textarea>
+      <!-- <input type="text" placeholder="Reason for rejection" [(ngModel)]="reason"> -->
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <button *ngIf="isRejected" class="btn btn-primary" type="button" (click)="SubmitReason()" mat-raised-button >Submit</button>
+  </div>
+
+</div>

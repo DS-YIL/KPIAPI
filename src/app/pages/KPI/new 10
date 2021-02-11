@@ -1,0 +1,27 @@
+1)      Once Requestor submit the Credit control Request depends upon the money type and number of days it will goes to different approver for approval.
+ 
+Condition 1:
+If money type is 1 then first mail will goes to 1st Recommender  once he approve the request then mail will go to next   approver that is 1st approver and if 1st approver approve then TCA form will final approve and final mail will goes to Requestor .
+ 
+Condition 2 :
+If money Type is 2 then first mail will goes to 1st recommender after approval next mail goes to verifier after verifier approval next mail will goes to 1st  Approver and after final approval mail will goes to Requestor.
+ 
+Condition 3:
+If money type is 4 then first mail will goes to 1st Recommender after approval next mail will goes to 2nd recommender after approval next mail will goes to Verifier after verifier approval next mail will goes to 1st approval after final approval mail will go to Requestor.
+ 
+Condition 4:
+If money type is 16 then first mail will go to 1st Recommender after approval next mail will go to 2nd recommender after approval next mail will go to Verifier after approval next mail will go to 1st Approver  after first approver approval next mail will go to 2nd Approver  after  2nd approver approve the request final mail will go to requestor.
+ 
+Condition 5: 
+ If requestor will select Number of days less than 30 days then first mail will go to 1st Recommender and after approval next mail go to 1st  Approver and after final approval mail will go to Requestor.
+ 
+      Condition 6: 
+      If Requestor will select number of days greater than 30 days then first mail will go to 1st Recommender after approval next mail will      go to 2nd recommender after approval next mail will go to Verifier after approval next mail will go to 1st Approver  after first approver approval next mail will go to 2nd Approver  after  2nd approver approve the request final mail will go to requestor.
+ 
+Note: 
+1)      if any condition any approver will reject the TCA request form rejected mail will go to Requestor with the reject status.
+2)      1 approver  can have multiple approver type like 1st approver , 2nd approver etc.
+
+400105-gayathri
+
+http://10.29.15.68:85/CCA/ApprovalDashboard?EmployeeNo=190972

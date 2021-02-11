@@ -1,0 +1,58 @@
+
+<div class="container-fluid">
+    <!-- <nb-card> -->
+    
+       <h6 style="text-align: center"> Department QI Pending Approvals</h6>  
+<p-table  [value]="dataList" [paginator]="true" [rows]="10">
+    <ng-template pTemplate="caption">
+        <div class="ui-helper-clearfix" style="text-align: left">
+            <!-- <button type="button" pButton icon="pi pi-file-excel" iconPos="left" label="EXCEL" (click)="exportExcel()" style="margin-right: 0.5em;" class="ui-button-success"></button> -->
+             </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th style="width:70px; text-align: center;background-color: #007ad9;color: #ffffff;">Sl No.</th>
+            <!-- <th  style="background-color: #007ad9;color: #ffffff;text-align: center;width: 100px;">
+               Department ID
+            </th> -->
+            <th  style="background-color: #007ad9;color: #ffffff;text-align: center;width: 200px;">
+               Department Name
+            </th>
+            <th  style="background-color: #007ad9;color: #ffffff;text-align: center;width: 200px;">
+               Entered By
+            </th>
+            <th  style="background-color: #007ad9;color: #ffffff;text-align: center;width: 300px;">
+                Approve/Reject
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri="rowIndex" let-rindex=0>
+        <tr [pEditableRow]="rowData">
+            <td style="text-align: center;">
+                {{ri+1}}
+            </td>
+            <!-- <td style="text-align: center;width: 150px;">{{rowData.deptid}}</td> -->
+            <td>{{rowData.deptname}}</td>
+            <td>{{rowData.empName}}</td>
+            <td [hidden]=true>{{rowData.employeeNo}}</td>
+            <td style="width: 300px;">
+                <button  class="btn btn-primary" (click)="Approvekpi(rowData,ri)" mat-raised-button >Approve</button>
+                &nbsp;&nbsp;
+                <button  class="btn btn-primary" (click)="Rejectkpi(rowData,ri)" mat-raised-button >Reject</button>
+                
+                   </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+
+<!-- </nb-card> -->
+</div>
+<p-dialog header="Reson for Rejection" [(visible)]="isRejected" [responsive]="true" showEffect="fade" [modal]="true" [style]="{'width':'25%','height':'auto','overflow':'auto!important','margin-right': '0px','margin-left':'0px'}">
+ 
+    <textarea *ngIf="isRejected" [rows]="3" [cols]="25" pInputTextarea autoResize="autoResize" placeholder="Reason for rejection" [(ngModel)]="reason"></textarea>
+    <!-- <input type="text" placeholder="Reason for rejection" [(ngModel)]="reason"> -->
+    &nbsp;&nbsp;
+    <button style="margin-top: 10px;position: absolute;" *ngIf="isRejected" class="btn btn-primary" type="button" (click)="SubmitReason()" mat-raised-button >Submit</button>
+
+</p-dialog>

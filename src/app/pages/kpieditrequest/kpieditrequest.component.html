@@ -1,0 +1,33 @@
+<p-card header="" [style]="{'border-radius': '10px'}">
+<div>
+    <h5 style="text-align:center;color:white;background-color: #007ad9;">Create/Edit QI Request</h5>
+    <div class="row " style="margin-top:20px;margin-left: 20px;">
+        <div class="col-lg-6 col-md-6 col-sm-6 form-inline">
+          <label  class="form-label"><b>Department Name: </b> </label>&nbsp;
+          <input [attr.disabled]=true style="height: 30px;" type="text" value={{deptName}}>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 form-inline">
+          <label class="form-label"><b>Employee Name: </b> </label>&nbsp;
+          <input [attr.disabled]=true style="height: 30px;" type="text" value={{employeeName}}>
+        </div>
+      </div>
+      <div class="row" style="margin-top:20px;margin-left: 20px;">
+        <div class="col-lg-6 col-md-6 col-sm-6 form-inline">
+            <label  class="form-label"><b> Please enter the reason to Create/Edit QI: </b> </label>&nbsp;
+          </div>
+      </div>
+      <div class="row" style="margin-top:20px;margin-left: 20px;">
+        <div class="col-lg-12 col-md-12 col-sm-12 form-inline">
+        <textarea [(ngModel)]="reason" [readonly]="!showSubmit" class="col-lg-12 col-md-12 col-sm-12 form-label"></textarea>  
+        </div>
+      </div>
+      <div class="row" style="margin-top:20px;" >
+        <div class="col-lg-12 col-md-12 col-sm-12 text-center" style="text-align:center">
+            <button *ngIf="showSubmit" class="btn btn-primary" type="button"  (click)="SubmitReason()" mat-raised-button >Send Request</button>
+         <label *ngIf="!showSubmit" style="color: red;">Request has been already sent - waiting for Approval</label>
+          </div>
+      </div>
+</div>
+
+
+</p-card>

@@ -13,6 +13,18 @@ export class kpiMaster{
     Actual:string;
     MgtKPICheckedStatus:any;
     Month:any;   
+    aprilTarget:any;
+    mayTarget:any;
+    juneTarget:any;
+    julyTarget:any;
+    augTarget:any;
+    sepTarget:any;
+    octTarget:any;
+    novTarget:any;
+    decTarget:any;
+    janTarget:any;
+    febTarget:any;
+    marTarget:any;
     QualityIndices:string;
     Measurement:string;
     Criteria:string;
@@ -36,6 +48,7 @@ export class KpiGraphicalModel {
     CWQPNo: string;
     DeptName: string;
     //Department:string;
+    QIShortText:any;
     DocNo: string;
     Measurment: string;
     RevNo: string;
@@ -49,6 +62,31 @@ export class KpiGraphicalModel {
     Month:any;
     Actual:number;
     MT_QK_KPI:kpiMaster;
+    aprilTarget:any;
+    mayTarget:any;
+    juneTarget:any;
+    julyTarget:any;
+    augTarget:any;
+    sepTarget:any;
+    octTarget:any;
+    novTarget:any;
+    decTarget:any;
+    janTarget:any;
+    febTarget:any;
+    marTarget:any;
+    marchachieved:any;
+    aprilachieved:any;
+    mayachieved:any;
+    juneachieved:any;
+    julyachieved:any;
+    augustachieved:any;
+    sepachieved:any;
+    octachieved:any;
+    novachieved:any;
+    decachieved:any;
+    janachieved:any;
+    febachieved:any;
+
    }
 
    export class DeptNameModel{
@@ -66,8 +104,9 @@ export class KpiGraphicalModel {
 }
    export class KeyModel{
     KpiName:string;
-    QualityIndices:string;
+    //QualityIndices:string;
+    QIShortText:string;
     KpiList:KpiGraphicalModel[];
-
+   
 }
 

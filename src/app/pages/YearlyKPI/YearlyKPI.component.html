@@ -1,23 +1,33 @@
-<div class="panel panel-default">
+<div class="panel panel-default" >
     <div class="panel-body">
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-4 form-group">
-                <label for="DivisionName" class="form-label">Department Name :</label>
+                <label for="DivisionName" class="form-label">Department Name </label>
                 <!-- <p-dropdown [options]="deptlist" [(ngModel)]="selectedCity" placeholder="Select Department" optionLabel="name" [showClear]="true"></p-dropdown> -->
                 <select placeholder="Dipartment" id="dipartment" name="Dipartment" (change)="onSelectDpt($event)"
                     class="form-control">
                     <option value="All Department">All</option>
+                    <option *ngIf="roleid==5 || roleid==4" value="KPI Management">Management QI</option>
                     <option *ngFor="let data of deptlist" value={{data.DeptId}}>{{data.DepName}} </option>
                 </select>
 
             </div>
 
             <div class="col-lg-3 col-md-3 col-sm-3 form-group">
-                <label for="Year" class="form-label">FY :</label>
-                <select placeholder="Year" id="year" name="Year" (change)="onSelectYear($event)" class="form-control">
-                    <option value="2020"> 2020</option>
-                    <option value="2019"> 2019</option>
-                </select>
+                <label for="Year" class="form-label">FY</label>
+                <kendo-datepicker class="form-control" 
+            [min]="min"
+            [max]="max"
+            [bottomView]="'decade'"
+            [topView]="'decade'"
+            [format]="'yyyy'"
+            [(value)]="valuedate"
+  ></kendo-datepicker>
+                <!-- <select placeholder="Year" id="year" name="Year" (change)="onSelectYear($event)" class="form-control">
+                  <option value="0"> Select Year</option>  
+                  <option value="2020"> FY 20</option>
+                    <option value="2021"> FY 21</option>
+                </select> -->
             </div>
 
             <div class="col-lg-2 col-md-2 col-sm-2 form-group">
@@ -26,18 +36,40 @@
             </div>
 
             <div class="col-lg-3 col-md-3 col-sm-3 form-group">
-                <button style="margin-top: 25px;" [routerLink]="['/KPI/GraphicalYearlyKPI']" class="btn btn-primary" type="button" >GoTo GraphicalKPI </button>    
+                <button style="margin-top: 25px;" [routerLink]="['/KPI/GraphicalYearlyKPI',selectedDept,selectedYear]" class="btn btn-primary" type="button" >Go To Graphical KPI </button>    
             </div>
         </div>
 
         <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12">
-                <p-table #dt [value]="dataList" dataKey="kpi"
+            <div class="col-lg-12 col-md-12 col-sm-12" 
+            >
+                <p-table [value]="dataList" 
                     [globalFilterFields]="['QualityIndices','Criteria','CWQPNo','DeptName','Measurment','Target','Actual']"
-                    editMode="row" [paginator]="true" [rows]="7" [resizableColumns]="true" columnResizeMode="expand"
-                    [responsive]="true" selectionMode="single">
+                    [scrollable]="true" scrollHeight="275px"  [style]="{width:'auto'}">
                     <ng-template pTemplate="caption">
-                        QHSE KPI - Report
+                      <div class="row">
+                        <div class="col-sm-4 col-lg-4 col-md-4">
+                          <button type="button" pButton icon="pi pi-file-excel" iconPos="left" label="Excel to Download Report" (click)="exportExcel()" style="margin-right: 0.5em;" class="ui-button-success"></button>
+                        
+                        </div>
+                        <div class="col-sm-4 col-lg-4 col-md-4">
+                          Yearly QI Report
+                          <div style="text-align: center" *ngIf="showSelectedTitle">
+                            <span>{{selectedDeptName.DepName}}</span> &nbsp;
+                            <span>{{selectedYear}}</span>
+                        </div>
+                        </div>
+                        <div class="col-sm-4 col-lg-4 col-md-4">
+                          <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+                          <input type="text" pInputText size="25" placeholder="Global Filter"
+                              (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                      
+                        </div>
+                      </div>
+                      <!-- <div class="ui-helper-clearfix" style="text-align: left">
+                        <button type="button" pButton icon="pi pi-file-excel" iconPos="left" label="Excel to Download Report" (click)="exportExcel()" style="margin-right: 0.5em;" class="ui-button-success"></button>
+                         </div> -->
+                        <!-- Yearly QI Report
                         <div style="text-align: left" *ngIf="showSelectedTitle">
                             <span>{{selectedDeptName.DepName}}</span> &nbsp;
                             <span>{{selectedYear}}</span>
@@ -46,17 +78,88 @@
                             <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
                             <input type="text" pInputText size="25" placeholder="Global Filter"
                                 (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
-                        </div>
+                        </div> -->
                     </ng-template>
+                    <ng-template pTemplate="colgroup" let-columns>
+                      <colgroup>
+                          <col style="width:50px">
+                          <col style="width:100px">
+                          <col style="width:90px">
+                          <col style="width:250px">
+                          <col style="width:250px">
+                          <col style="width:250px">
+                          <col style="width:250px">
+                          <col *ngIf="aprTarget" style="width:70px">
+                          <col style="width:100px">
+                          <col style="width:70px">
+                          <col *ngIf="mayTarget" style="width:70px">
+                          <col style="width:70px">
+                          <col *ngIf="junTarget" style="width:70px">
+                          <col style="width:70px">
+                          <col *ngIf="julyTarget" style="width:70px">
+                          <col style="width:70px">
+                          <col *ngIf="augTarget" style="width:70px">
+                          <col style="width:70px">
+                          <col *ngIf="sepTarget" style="width:70px">
+                          <col style="width:70px">
+                          <col *ngIf="octTarget" style="width:70px">
+                          <col style="width:70px">
+                          <col *ngIf="novTarget" style="width:70px">
+                          <col style="width:70px">
+                          <col *ngIf="decTarget" style="width:70px">
+                          <col style="width:70px">
+                          <col *ngIf="janTarget" style="width:70px">
+                          <col style="width:70px">
+                          <col *ngIf="febTarget" style="width:70px">
+                          <col style="width:70px">
+                          <col *ngIf="marTarget" style="width:70px">
+                          <col style="width:70px">
+                      </colgroup>
+                  </ng-template>
                     <ng-template pTemplate="header">
                         <tr>
+                          <th style="background-color: #007ad9;color: #ffffff;text-align: center">Sl No.</th>
+                            <th style="background-color: #007ad9;color: #ffffff;text-align: center;">Dept Name</th>
+                            <th style="background-color: #007ad9;color: #ffffff;text-align: center">CWQP No.</th>
+            
+                            <th style="background-color: #007ad9;color: #ffffff;text-align: center">Quality Indices</th>
+                            <th style="background-color: #007ad9;color: #ffffff;text-align: left">Measurement</th>
+                            <th style="background-color: #007ad9;color: #ffffff;text-align: center">Criteria</th>
+                            <th style="background-color: #007ad9;color: #ffffff;text-align: center">Purpose</th>
+                            <th *ngIf="aprTarget" style="background-color: #007ad9;color: #ffffff;text-align: center">Target</th>
+                            <th style="background-color: #007ad9;color: #ffffff;text-align: center">Unit Of Measurement</th>
+                            <th style="background-color: #007ad9;color: #ffffff;text-align: center">Apr</th>
+                            <th *ngIf="mayTarget" style="background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+                            <th style="background-color: #007ad9;color: #ffffff;text-align: center;">May</th>
+                            <th *ngIf="junTarget" style="background-color: #007ad9;color: #ffffff;text-align: center">NewTarget</th>
+                            <th style="background-color: #007ad9;color: #ffffff;text-align: center;">Jun</th>
+                            <th *ngIf="julyTarget" style="background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+                            <th style="background-color: #007ad9;color: #ffffff;text-align: center">Jul</th>
+                            <th *ngIf="augTarget" style="background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+                            <th style="background-color: #007ad9;color: #ffffff;text-align: center">Aug</th>
+                            <th *ngIf="sepTarget" style="background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+                            <th style="background-color: #007ad9;color: #ffffff;text-align: center">Sep</th>
+                            <th *ngIf="octTarget" style="background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+                            <th style="background-color: #007ad9;color: #ffffff;text-align: center">Oct</th>
+                            <th *ngIf="novTarget" style="background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+                            <th style="background-color: #007ad9;color: #ffffff;text-align: center">Nov</th>
+                            <th *ngIf="decTarget" style="background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+                            <th style="background-color: #007ad9;color: #ffffff;text-align: center">Dec</th>
+                            <th *ngIf="janTarget" style="background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+                            <th style="background-color: #007ad9;color: #ffffff;text-align: center">Jan</th>
+                            <th *ngIf="febTarget" style="background-color: #007ad9;color: #ffffff;">New Target</th>
+                            <th style="background-color: #007ad9;color: #ffffff;text-align: center">Feb</th>
+                            <th *ngIf="marTarget" style="background-color: #007ad9;color: #ffffff;text-align: center">New Target</th>
+                            <th style="background-color: #007ad9;color: #ffffff;text-align: center">Mar</th>
+                          
+
                             <!-- <th style="width:5em">Select</th> -->
                             <!-- <th>Department</th> -->
-                            <th style="width:7em">CWQP No</th>
+                            <!-- <th style="width:7em">CWQP No</th>
                             <th style="width:8em">Quality Indices</th>
                             <th style="width:10em">Criteria</th>
                             <th style="width:8em">Measurement</th>
-                            <!-- <th>Purpose</th> -->
+                            <th>Purpose</th>
                             <th style="width:5em">Target</th>
                             <th style="width:5em">Mar</th>
                             <th style="width:5em">Apr</th>
@@ -66,13 +169,13 @@
                             <th style="width:5em">Aug</th>
                             <th style="width:5em">Sep</th>
                             <th style="width:5em">Oct</th>
-                            <th style="width:5em">Nov</th>
+                            <th style="width:5em">Nov</th> -->
                             <!-- <th style="width:5em">Actual</th>  
             <th style="width:5em">Month</th>           -->
                             <!-- <th style="width:8em"></th>            -->
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+                    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" >
                         <tr [pEditableRow]="rowData">
                             <!-- <td>
                 {{rowData.KpiId}} 
@@ -83,7 +186,228 @@
                                         {{rowData.Department}}
                                    
                             </td> -->
-                            <td>
+                            <td style="text-align: center">
+                              {{ri+1}}
+                            </td>
+                            <td style="text-align: left;word-wrap: break-word">
+                                {{rowData.DeptName}}
+                              </td>
+                              <td style="text-align: left;word-wrap: break-word">
+                                {{rowData.CWQPNo}}
+                              </td>
+                             
+                              <td style="text-align: left;word-wrap: break-word">
+                                {{rowData.QualityIndices}}
+                              </td>
+                              <td style="text-align: left;word-wrap: break-word">
+                                {{rowData.Measurment}}
+                              </td>
+                              <td style="text-align: left;word-wrap: break-word">
+                                {{rowData.Criteria}}
+                              </td>
+                              <td style="text-align: left;word-wrap: break-word">
+                                {{rowData.Purpose}}
+                              </td>
+                              <td style="text-align: right">
+                                {{rowData.aprilTarget}}
+                              </td>
+                              <td style="text-align: right">
+                                {{rowData.Unitofmeasurement}}
+                              </td>
+                              <td  [ngClass]="rowData.aprilTarget - rowData.aprilachieved > 0 ? 'old-car' : null">
+                                <p-cellEditor>
+                                    <ng-template  pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="rowData.aprilachieved">
+                                    </ng-template>
+                                    <ng-template  pTemplate="output" style="text-align: right;">
+                                        {{rowData.aprilachieved}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td> 
+                              <!-- <td style="text-align: right">
+                                
+                              {{rowData.aprilachieved}}
+                              </td > -->
+                              <td *ngIf="mayTarget" style="text-align: right">
+                                {{rowData.mayTarget}}
+                              </td>
+                              <td  [ngClass]="rowData.aprilTarget - rowData.mayachieved > 0 ? 'old-car' : null">
+                                <p-cellEditor>
+                                    <ng-template  pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="rowData.mayachieved">
+                                    </ng-template>
+                                    <ng-template  pTemplate="output" style="text-align: right;">
+                                        {{rowData.mayachieved}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td> 
+                              <!-- <td style="text-align: right;">
+                                {{rowData.mayachieved}}
+                              </td> -->
+                              <td *ngIf="junTarget" style="text-align: right">
+                                {{rowData.junTarget}}
+                              </td>
+                              <td  [ngClass]="rowData.aprilTarget - rowData.juneachieved > 0 ? 'old-car' : null">
+                                <p-cellEditor>
+                                    <ng-template  pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="rowData.juneachieved">
+                                    </ng-template>
+                                    <ng-template  pTemplate="output" style="text-align: right;">
+                                        {{rowData.juneachieved}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td> 
+                              <!-- <td style="text-align: right;width:90px">
+                                {{rowData.juneachieved}}
+                              </td> -->
+                              <td *ngIf="julyTarget" style="text-align: right">
+                                {{rowData.julyTarget}}
+                              </td>
+                              <td  [ngClass]="rowData.aprilTarget - rowData.julyachieved > 0 ? 'old-car' : null">
+                                <p-cellEditor>
+                                    <ng-template  pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="rowData.julyachieved">
+                                    </ng-template>
+                                    <ng-template  pTemplate="output" style="text-align: right;">
+                                        {{rowData.julyachieved}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td> 
+                              <!-- <td style="text-align: right">
+                                {{rowData.julyachieved}}
+                              </td> -->
+                              <td *ngIf="augTarget" style="text-align: right">
+                                {{rowData.augTarget}}
+                              </td>
+                              <td  [ngClass]="rowData.aprilTarget - rowData.augustachieved > 0 ? 'old-car' : null">
+                                <p-cellEditor>
+                                    <ng-template  pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="rowData.augustachieved">
+                                    </ng-template>
+                                    <ng-template  pTemplate="output" style="text-align: right;">
+                                        {{rowData.augustachieved}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td> 
+                              <!-- <td style="text-align: right">
+                                {{rowData.augustachieved}}
+                              </td> -->
+                              <td *ngIf="sepTarget" style="text-align: right">
+                                {{rowData.sepTarget}}
+                              </td>
+                              <td  [ngClass]="rowData.aprilTarget - rowData.sepachieved > 0 ? 'old-car' : null">
+                                <p-cellEditor>
+                                    <ng-template  pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="rowData.sepachieved">
+                                    </ng-template>
+                                    <ng-template  pTemplate="output" style="text-align: right;">
+                                        {{rowData.sepachieved}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td> 
+                              <!-- <td style="text-align: right">
+                                {{rowData.sepachieved}}
+                              </td> -->
+                              <td *ngIf="octTarget" style="text-align: right">
+                                {{rowData.octTarget}}
+                              </td>
+                              <td  [ngClass]="rowData.aprilTarget - rowData.octachieved > 0 ? 'old-car' : null">
+                                <p-cellEditor>
+                                    <ng-template  pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="rowData.octachieved">
+                                    </ng-template>
+                                    <ng-template  pTemplate="output" style="text-align: right;">
+                                        {{rowData.octachieved}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td> 
+                              <!-- <td style="text-align: right">
+                                {{rowData.octachieved}}
+                              </td> -->
+                              <td *ngIf="novTarget" style="text-align: right">
+                                {{rowData.novTarget}}
+                              </td>
+                              <td  [ngClass]="rowData.aprilTarget - rowData.novachieved > 0 ? 'old-car' : null">
+                                <p-cellEditor>
+                                    <ng-template  pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="rowData.novachieved">
+                                    </ng-template>
+                                    <ng-template  pTemplate="output" style="text-align: right;">
+                                        {{rowData.novachieved}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td> 
+                              <!-- <td style="text-align: right">
+                                {{rowData.novachieved}}
+                              </td> -->
+                              <td *ngIf="decTarget" style="text-align: right">
+                                {{rowData.decTarget}}
+                              </td>
+                              <td  [ngClass]="rowData.aprilTarget - rowData.decachieved > 0 ? 'old-car' : null">
+                                <p-cellEditor>
+                                    <ng-template  pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="rowData.decachieved">
+                                    </ng-template>
+                                    <ng-template  pTemplate="output" style="text-align: right;">
+                                        {{rowData.decachieved}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td> 
+
+
+                              <!-- <td style="text-align: right">
+                                {{rowData.decachieved}}
+                              </td> -->
+                              <td *ngIf="janTarget" style="text-align: right">
+                                {{rowData.janTarget}}
+                              </td>
+                              <td  [ngClass]="rowData.aprilTarget - rowData.janachieved > 0 ? 'old-car' : null">
+                                <p-cellEditor>
+                                    <ng-template  pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="rowData.janachieved">
+                                    </ng-template>
+                                    <ng-template  pTemplate="output" style="text-align: right;">
+                                        {{rowData.janachieved}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td> 
+                              <!-- <td style="text-align: right">
+                                {{rowData.janachieved}}
+                              </td> -->
+                              <td *ngIf="febTarget" style="text-align: right">
+                                {{rowData.febTarget}}
+                              </td>
+                              <td  [ngClass]="rowData.aprilTarget - rowData.febachieved > 0 ? 'old-car' : null">
+                                <p-cellEditor>
+                                    <ng-template  pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="rowData.febachieved">
+                                    </ng-template>
+                                    <ng-template  pTemplate="output" style="text-align: right;">
+                                        {{rowData.febachieved}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td> 
+                              <!-- <td style="text-align: right">
+                                {{rowData.febachieved}}
+                              </td> -->
+                              <td *ngIf="marTarget" style="text-align: right">
+                                {{rowData.marTarget}}
+                              </td>
+                              <td  [ngClass]="rowData.aprilTarget - rowData.marchachieved > 0 ? 'old-car' : null">
+                                <p-cellEditor>
+                                    <ng-template  pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="rowData.marchachieved">
+                                    </ng-template>
+                                    <ng-template  pTemplate="output" style="text-align: right;">
+                                        {{rowData.marchachieved}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td> 
+                              <!-- <td style="text-align: right">
+                                {{rowData.marchachieved}}
+                              </td> -->
+
+                            <!-- <td>
                                
                                         {{rowData.CWQPNo}}
                                     
@@ -119,16 +443,7 @@
                                     </ng-template>
                                 </p-cellEditor>
                             </td>
-                            <!-- <td>
-                <p-cellEditor>
-                    <ng-template pTemplate="input">
-                        <input pInputText type="text" [(ngModel)]="rowData.Purpose">
-                    </ng-template>
-                    <ng-template pTemplate="output">
-                        {{rowData.Purpose}}
-                    </ng-template>
-                </p-cellEditor>
-            </td> -->
+               
                             <td>
                                 <p-cellEditor>
                                     <ng-template pTemplate="input">
@@ -183,7 +498,7 @@
 
                                 {{rowData.November}}
 
-                            </td>
+                            </td> -->
                         </tr>
                     </ng-template>
                 </p-table>

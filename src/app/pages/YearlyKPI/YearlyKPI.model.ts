@@ -25,6 +25,18 @@ export class kpiMaster{
     EnteredBy:string;
     EnteredOn:any; 
     InUse:any;
+    aprilTarget:any;
+    mayTarget:any;
+    juneTarget:any;
+    julyTarget:any;
+    augTarget:any;
+    sepTarget:any;
+    octTarget:any;
+    novTarget:any;
+    decTarget:any;
+    janTarget:any;
+    febTarget:any;
+    marTarget:any;
     //OrgDepartment:OrgDepartmentModel;    
 }
 
@@ -34,7 +46,7 @@ export class KpiYearlyModel {
     QualityIndices: string;
     Criteria: string;
     CWQPNo: string;
-    DeptName: string;
+    DeptName: any;
     Department:string;
     DocNo: string;
     Measurement:string;
@@ -50,6 +62,34 @@ export class KpiYearlyModel {
     Month:number;
     Actual:any;
     MT_QK_KPI:kpiMaster;
+ //Department:string;
+ Unitofmeasurement:any;
+ DeptId:any;
+ MgtKPICheckedStatus:boolean = false;
+ marchachieved:any;
+    aprilachieved:any;
+    mayachieved:any;
+    juneachieved:any;
+    julyachieved:any;
+    augustachieved:any;
+    sepachieved:any;
+    octachieved:any;
+    novachieved:any;
+    decachieved:any;
+    janachieved:any;
+    febachieved:any;
+    aprilTarget:any;
+    mayTarget:any;
+    juneTarget:any;
+    julyTarget:any;
+    augTarget:any;
+    sepTarget:any;
+    octTarget:any;
+    novTarget:any;
+    decTarget:any;
+    janTarget:any;
+    febTarget:any;
+    marTarget:any;
    }
 
    export class DeptNameModel{
